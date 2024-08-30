@@ -1,0 +1,73 @@
+/* Include Animate.css for animations */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
+
+/* Main Button Styling */
+.btn-main {
+  background-color: #e6a23c;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-main:hover {
+  background-color: #d09423;
+  color: white;
+}
+
+/* Action Buttons (Edit, Delete) */
+.action-btn {
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-secondary.action-btn {
+  background-color: #6c757d;
+}
+
+.btn-danger.action-btn {
+  background-color: #d9534f;
+}
+
+.action-btn:hover {
+  background-color: #e6a23c;
+  color: white;
+}
+
+/* Table Styling */
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #e6a23c;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-header {
+  background-color: #2d5356 !important;
+  color: white;
+}
+
+/* Modal Styling */
+.modal-header {
+  background-color: #2d5356;
+  color: #fff;
+}
+
+.modal-content {
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-close {
+  background-color: white;
+  color: #2d5356;
+}
+
+/* Add animations */
+.modal-content.animate__fadeIn {
+  animation: animate__fadeIn 1s ease-out;
+}

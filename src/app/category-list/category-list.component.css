@@ -1,0 +1,78 @@
+/* category-list.component.css */
+
+/* Button Styles */
+.create-btn {
+  background-color: #e6a23c;
+  color: #fff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.create-btn:hover {
+  background-color: #d49c1d;
+  transform: scale(1.05);
+}
+
+.edit-btn {
+  background-color: #e6a23c;
+  color: #fff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #d49c1d;
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  background-color: #2d5356;
+  color: #fff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #1e3d3e;
+  transform: scale(1.05);
+}
+
+/* Table Header Styles */
+thead {
+  background-color: #2d5356;
+  color: #fff;
+}
+
+/* Modal Header Styles */
+.edit-modal-header,
+.create-modal-header {
+  background-color: #2d5356;
+  color: #fff;
+}
+
+/* Save Button Styles */
+.save-btn {
+  background-color: #e6a23c;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #d49c1d;
+}
+
+/* Fade-In Animation */
+.fade-in {
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Animation */
+.modal-content {
+  animation: fadeIn 0.5s ease-in;
+}

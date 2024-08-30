@@ -1,0 +1,453 @@
+<!-- product-list.component.html -->
+<div class="container">
+  <!-- Create New Product Button -->
+  <button class="btn btn-primary mb-4" (click)="openCreateModal()">
+    Create New Product
+  </button>
+
+  <!-- Product Table -->
+  <table class="table table-striped text-center">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Image</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Brand</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.title }}</td>
+        <td>
+          <img
+            [src]="product.images[0]"
+            alt="Product Image"
+            class="img-thumbnail"
+            style="max-width: 80px; max-height: 80px"
+          />
+        </td>
+        <td>{{ product.description }}</td>
+        <td>${{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.brand }}</td>
+        <td>
+          <button
+            class="btn btn-warning btn-sm"
+            (click)="openEditModal(product)"
+          >
+            <i class="fas fa-edit"></i>
+          </button>
+          <button
+            class="btn btn-danger btn-sm ms-2"
+            (click)="deleteProduct(product._id)"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Edit Product Modal -->
+<div
+  class="modal fade"
+  id="editProductModal"
+  tabindex="-1"
+  aria-labelledby="editProductModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onEditSubmit()">
+          <!-- Title -->
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              id="title"
+              [(ngModel)]="selectedProduct.title"
+              name="title"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              [(ngModel)]="selectedProduct.description"
+              name="description"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <!-- Price -->
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              id="price"
+              [(ngModel)]="selectedProduct.price"
+              name="price"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Stock -->
+          <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input
+              type="number"
+              id="stock"
+              [(ngModel)]="selectedProduct.stock"
+              name="stock"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Brand -->
+          <div class="mb-3">
+            <label for="brand" class="form-label">Brand</label>
+            <input
+              type="text"
+              id="brand"
+              [(ngModel)]="selectedProduct.brand"
+              name="brand"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Dimensions -->
+          <div class="mb-3">
+            <label class="form-label">Dimensions</label>
+            <div class="d-flex gap-2">
+              <div class="flex-fill">
+                <label for="width" class="form-label">Width</label>
+                <input
+                  type="number"
+                  id="width"
+                  [(ngModel)]="selectedProduct.dimensions.width"
+                  name="width"
+                  class="form-control"
+                />
+              </div>
+              <div class="flex-fill">
+                <label for="height" class="form-label">Height</label>
+                <input
+                  type="number"
+                  id="height"
+                  [(ngModel)]="selectedProduct.dimensions.height"
+                  name="height"
+                  class="form-control"
+                />
+              </div>
+              <div class="flex-fill">
+                <label for="depth" class="form-label">Depth</label>
+                <input
+                  type="number"
+                  id="depth"
+                  [(ngModel)]="selectedProduct.dimensions.depth"
+                  name="depth"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Warranty Information -->
+          <div class="mb-3">
+            <label for="warrantyInformation" class="form-label"
+              >Warranty Information</label
+            >
+            <textarea
+              id="warrantyInformation"
+              [(ngModel)]="selectedProduct.warrantyInformation"
+              name="warrantyInformation"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <!-- Availability Status -->
+          <div class="mb-3">
+            <label for="availabilityStatus" class="form-label"
+              >Availability Status</label
+            >
+            <input
+              type="text"
+              id="availabilityStatus"
+              [(ngModel)]="selectedProduct.availabilityStatus"
+              name="availabilityStatus"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Return Policy -->
+          <div class="mb-3">
+            <label for="returnPolicy" class="form-label">Return Policy</label>
+            <textarea
+              id="returnPolicy"
+              [(ngModel)]="selectedProduct.returnPolicy"
+              name="returnPolicy"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <!-- Meta -->
+          <div class="mb-3">
+            <label for="barcode" class="form-label">Barcode</label>
+            <input
+              type="text"
+              id="barcode"
+              [(ngModel)]="selectedProduct.meta.barcode"
+              name="barcode"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Images -->
+          <div class="mb-3">
+            <label for="images" class="form-label">Images</label>
+            <input
+              type="text"
+              id="images"
+              [(ngModel)]="selectedProduct.images"
+              name="images"
+              class="form-control"
+              placeholder="Comma-separated URLs"
+            />
+          </div>
+
+          <!-- Thumbnail -->
+          <div class="mb-3">
+            <label for="thumbnail" class="form-label">Thumbnail</label>
+            <input
+              type="text"
+              id="thumbnail"
+              [(ngModel)]="selectedProduct.thumbnail"
+              name="thumbnail"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Save Button -->
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Product Modal -->
+<div
+  class="modal fade"
+  id="createProductModal"
+  tabindex="-1"
+  aria-labelledby="createProductModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createProductModalLabel">Create Product</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onCreateSubmit()">
+          <!-- Title -->
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              id="title"
+              [(ngModel)]="newProduct.title"
+              name="title"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              [(ngModel)]="newProduct.description"
+              name="description"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <!-- Price -->
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              id="price"
+              [(ngModel)]="newProduct.price"
+              name="price"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Stock -->
+          <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input
+              type="number"
+              id="stock"
+              [(ngModel)]="newProduct.stock"
+              name="stock"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Brand -->
+          <div class="mb-3">
+            <label for="brand" class="form-label">Brand</label>
+            <input
+              type="text"
+              id="brand"
+              [(ngModel)]="newProduct.brand"
+              name="brand"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Dimensions -->
+          <div class="mb-3">
+            <label class="form-label">Dimensions</label>
+            <div class="d-flex gap-2">
+              <div class="flex-fill">
+                <label for="width" class="form-label">Width</label>
+                <input
+                  type="number"
+                  id="width"
+                  [(ngModel)]="newProduct.dimensions.width"
+                  name="width"
+                  class="form-control"
+                />
+              </div>
+              <div class="flex-fill">
+                <label for="height" class="form-label">Height</label>
+                <input
+                  type="number"
+                  id="height"
+                  [(ngModel)]="newProduct.dimensions.height"
+                  name="height"
+                  class="form-control"
+                />
+              </div>
+              <div class="flex-fill">
+                <label for="depth" class="form-label">Depth</label>
+                <input
+                  type="number"
+                  id="depth"
+                  [(ngModel)]="newProduct.dimensions.depth"
+                  name="depth"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Warranty Information -->
+          <div class="mb-3">
+            <label for="warrantyInformation" class="form-label"
+              >Warranty Information</label
+            >
+            <textarea
+              id="warrantyInformation"
+              [(ngModel)]="newProduct.warrantyInformation"
+              name="warrantyInformation"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <!-- Availability Status -->
+          <div class="mb-3">
+            <label for="availabilityStatus" class="form-label"
+              >Availability Status</label
+            >
+            <input
+              type="text"
+              id="availabilityStatus"
+              [(ngModel)]="newProduct.availabilityStatus"
+              name="availabilityStatus"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Return Policy -->
+          <div class="mb-3">
+            <label for="returnPolicy" class="form-label">Return Policy</label>
+            <textarea
+              id="returnPolicy"
+              [(ngModel)]="newProduct.returnPolicy"
+              name="returnPolicy"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <!-- Meta -->
+          <div class="mb-3">
+            <label for="barcode" class="form-label">Barcode</label>
+            <input
+              type="text"
+              id="barcode"
+              [(ngModel)]="newProduct.meta.barcode"
+              name="barcode"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Images -->
+          <div class="mb-3">
+            <label for="images" class="form-label">Images</label>
+            <input
+              type="text"
+              id="images"
+              [(ngModel)]="newProduct.images"
+              name="images"
+              class="form-control"
+              placeholder="Comma-separated URLs"
+            />
+          </div>
+
+          <!-- Thumbnail -->
+          <div class="mb-3">
+            <label for="thumbnail" class="form-label">Thumbnail</label>
+            <input
+              type="text"
+              id="thumbnail"
+              [(ngModel)]="newProduct.thumbnail"
+              name="thumbnail"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Save Button -->
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="login-background">
+  <div class="login-container">
+    <img src="loogo.png" alt="ITIANS Electronics Logo" class="logo" />
+
+    <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
+      <h2 class="login-title">Sign In</h2>
+      <div class="mb-3">
+        <input
+          id="email"
+          formControlName="email"
+          name="email"
+          type="email"
+          class="form-control"
+          placeholder="Email or mobile number"
+          [ngClass]="{
+            'is-invalid': email?.invalid && (email?.dirty || email?.touched)
+          }"
+        />
+        <div
+          *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+          class="invalid-feedback"
+        >
+          Valid email is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <input
+          id="password"
+          formControlName="password"
+          name="password"
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          [ngClass]="{
+            'is-invalid':
+              password?.invalid && (password?.dirty || password?.touched)
+          }"
+        />
+        <div
+          *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+          class="invalid-feedback"
+        >
+          Password must be at least 8 characters long and contain one uppercase
+          letter, one lowercase letter, one number, and one special character
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block login-button w-100"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        Sign In
+      </button>
+
+      <div *ngIf="isLoading" class="loader">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+
+      <!-- <div class="login-footer">
+        <a [routerLink]="['/forgetPassword']" class="text-link"
+          >Forgot password?</a
+        >
+        <p>
+          New to ITIANS Electronics?
+          <a [routerLink]="['/signup']" class="text-link">Sign up now.</a>
+        </p>
+      </div> -->
+    </form>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="container">
+  <button class="btn create-btn" (click)="openCreateModal()">
+    Create New Category
+  </button>
+  <br /><br />
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-10">Name</th>
+        <th class="col-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories" class="fade-in">
+        <td class="col-11">{{ category.name }}</td>
+        <td class="col-1">
+          <button class="btn btn-sm edit-btn" (click)="openEditModal(category)">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button
+            class="btn btn-danger btn-sm ms-2 delete-btn"
+            (click)="deleteCategory(category._id)"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Edit Category Modal -->
+<div
+  class="modal fade"
+  id="editCategoryModal"
+  tabindex="-1"
+  aria-labelledby="editCategoryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content animate__animated animate__fadeIn">
+      <div class="modal-header edit-modal-header">
+        <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onEditSubmit()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="selectedCategory.name"
+              name="name"
+              class="form-control"
+            />
+          </div>
+          <button type="submit" class="btn save-btn">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Category Modal -->
+<div
+  class="modal fade"
+  id="createCategoryModal"
+  tabindex="-1"
+  aria-labelledby="createCategoryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content animate__animated animate__fadeIn">
+      <div class="modal-header create-modal-header">
+        <h5 class="modal-title" id="createCategoryModalLabel">
+          Create Category
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onCreateSubmit()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="newCategory.name"
+              name="name"
+              class="form-control"
+            />
+          </div>
+          <button type="submit" class="btn save-btn">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

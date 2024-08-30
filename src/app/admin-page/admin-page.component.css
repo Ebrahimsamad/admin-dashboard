@@ -1,0 +1,46 @@
+/* Sidebar Styles */
+.bg-dark {
+  background-color: #2d5356 !important;
+}
+
+.nav-link {
+  color: #ffffff !important;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link.active {
+  background-color: #e6a23c !important;
+  color: #ffffff !important;
+  transform: scale(1.05); /* Slightly enlarge active link */
+}
+
+.nav-link:hover {
+  background-color: #e6a23c !important;
+  color: #ffffff !important;
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Main Content Styles */
+main {
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+main.fade-in {
+  opacity: 1;
+}
+
+/* Sidebar Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+nav {
+  animation: slideIn 0.5s ease-out;
+}

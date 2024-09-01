@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from '../../../model/User';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -15,53 +12,79 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // Create a new user
-  gitAdmin(): Observable<any> {
-    let authToken = localStorage.getItem('token'); 
-    return this.http.get<any>(this.adminUrl,{headers:new HttpHeaders({
-      Authorization: `${authToken}`,
-      'Content-Type': 'application/json',
-    })});
-  }
-  createUser(admin: User): Observable<User> {
+  // Handle headers and token retrieval
+  private getHeaders(): HttpHeaders {
     let authToken = localStorage.getItem('token'); // Retrieve the token from local storage
-    console.log('Auth Token = ' + authToken);
-
-    if (authToken) {
-      authToken = authToken.split(' ')[1]; // Split by space and get the token part
+    if (authToken && authToken.startsWith('Bearer ')) {
+      authToken = authToken.substring(7); // Remove 'Bearer ' prefix
     }
 
-    const headers = new HttpHeaders({
+    return new HttpHeaders({
       Authorization: `Bearer ${authToken}`, // Add the token to the Authorization header
-      'Content-Type': 'application/json', // Optionally, specify the content type
+      'Content-Type': 'application/json', // Specify content type
     });
-
-    console.log('Admin Object = ' + JSON.stringify(admin, null, 2));
-
-    return this.http.post<User>(this.adminUrl, admin, { headers }).pipe(
-      tap((data) => console.log('User created:', data)),
-      catchError(this.handleError)
-    );
   }
 
-  // Error handling
+  // Fetch admin users
+  getAdmin(): Observable<any> {
+    return this.http.get<any>(this.adminUrl, { headers: this.getHeaders() })
+      .pipe(
+        tap(response => console.log('Admins fetched:', response)),
+        catchError(this.handleError)
+      );
+  }
+
+  // Create a new user
+  createUser(admin: any): Observable<User> {
+    return this.http.post<any>(this.adminUrl, admin, { headers: this.getHeaders() })
+      .pipe(
+        tap((data) => console.log('User created:', data)),
+        catchError(this.handleError)
+      );
+  }
+
+  // Update an existing user
+  updateUser(id: string, admin: any): Observable<User> {
+    const url = `${this.adminUrl}/${id}`;
+    console.log("Admin _id = " + id);
+    return this.http.patch<any>(url, admin, { headers: this.getHeaders() })
+      .pipe(
+        tap((data) => console.log('User updated:', data)),
+        catchError(this.handleError)
+      );
+  }
+
+  // Delete a user by ID
+  deleteUser(id: string): Observable<any> {
+    const url = `${this.adminUrl}/${id}`;
+    return this.http.delete<any>(url, { headers: this.getHeaders() })
+      .pipe(
+        tap(() => console.log(`User with ID ${id} deleted`)),
+        catchError(this.handleError)
+      );
+  }
+
+
+  
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage: string;
+  
+    // Log the full error details
+    console.error('Error details:', error);
+  
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred
-      errorMessage = `An error occurred: ${error.error.message}`;
+      errorMessage = `Client-side error: ${error.error.message}`;
     } else {
       // The backend returned an unsuccessful response code
-      errorMessage = `Server returned code: ${error.status}, error message is: ${error.message}`;
+      errorMessage = `Server-side error: Status code ${error.status}, Message: ${error.message}`;
     }
-    console.error(errorMessage);
+  
+    // Log the user-friendly error message
+    console.error('Error message:', errorMessage);
+  
+    // Return an observable with a user-facing error message
     return throwError(() => new Error(errorMessage));
   }
+  
 }
-
-// Admin Object = {
-//   "name": "Test Fatma",
-//   "email": "testfatma@admin.com",
-//   "password": "testFatma!123123",
-//   "confirmPassword": "testFatma!123123"
-// }

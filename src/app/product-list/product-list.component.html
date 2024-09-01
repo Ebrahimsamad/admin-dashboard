@@ -8,15 +8,13 @@
 <!-- Product Table -->
 <!-- <table class="table table-striped text-center">
     <thead>
-      <tr>
-        <th>Title</th>
-        <th>Image</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Stock</th>
-        <th>Brand</th>
-        <th>Actions</th>
-      </tr>
+        <th class="col-1">Title</th>
+        <th class="col-1">Image</th>
+        <th class="col-5">Description</th>
+        <th class="col-1">Price</th>
+        <th class="col-1">Stock</th>
+        <th class="col-1">Brand</th>
+        <th class="col-1">Actions</th>
     </thead>
     <tbody>
       <tr *ngFor="let product of products">
@@ -30,7 +28,7 @@
           />
         </td>
         <td>{{ product.description }}</td>
-        <td>${{ product.price }}</td>
+        <td>{{ product.price }}</td>
         <td>{{ product.stock }}</td>
         <td>{{ product.brand }}</td>
         <td>

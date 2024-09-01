@@ -78,3 +78,142 @@
     </tbody>
   </table>
 </div>
+
+<!-- Edit User Modal -->
+<div
+  class="modal fade"
+  id="editUserModal"
+  tabindex="-1"
+  aria-labelledby="editUserModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content animate__animated animate__fadeIn">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editUserModalLabel">Edit Admin</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onEditSubmit()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="selectedUser.name"
+              name="name"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              [(ngModel)]="selectedUser.email"
+              name="email"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              [(ngModel)]="selectedUser.password"
+              name="password"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="role" class="formControl">Role</label>
+
+            <input
+              type="text"
+              id="role"
+              [(ngModel)]="selectedUser.role"
+              name="role"
+              class="form-control"
+            />
+          </div>
+          <button type="submit" class="btn btn-main">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create User Modal -->
+<div
+  class="modal fade"
+  id="createUserModal"
+  tabindex="-1"
+  aria-labelledby="createUserModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content animate__animated animate__fadeIn">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createUserModalLabel">Create Admin</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onCreateSubmit()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="newUser.name"
+              name="name"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              [(ngModel)]="newUser.email"
+              name="email"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              [(ngModel)]="newUser.password"
+              name="password"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirmPassword"
+              [(ngModel)]="newUser.confirmPassword"
+              name="confirmPassword"
+              class="form-control"
+            />
+          </div>
+          <button type="submit" class="btn btn-main">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

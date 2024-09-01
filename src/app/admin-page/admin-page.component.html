@@ -1,48 +1,7 @@
-<!-- <div class="container-fluid">
-  <div class="row">
-    <div
-      class="col-md-2"
-      style="background-color: #2d5356; height: 100vh; padding-top: 20px"
-    >
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a
-            class="nav-link text-white"
-            routerLink="/product"
-            onmouseover="this.style.backgroundColor='#e6a23c'"
-            onmouseout="this.style.backgroundColor=''"
-            >Product</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link text-white"
-            routerLink="/category"
-            onmouseover="this.style.backgroundColor='#e6a23c'"
-            onmouseout="this.style.backgroundColor=''"
-            >Category</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link text-white"
-            routerLink="/admin"
-            onmouseover="this.style.backgroundColor='#e6a23c'"
-            onmouseout="this.style.backgroundColor=''"
-            >Admin</a
-          >
-        </li>
-      </ul>
-    </div>
-    <div class="col-md-10 mt-4">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div> -->
-<div class="container-fluid">
+<div class="container-fluid mt-5 pt-4">
   <div class="row">
     <!-- Sidebar -->
-    <nav class="col-md-2 bg-dark text-white p-3 vh-100">
+    <nav class="col-md-2 bg-dark text-white p-3 vh-100 position-fixed">
       <ul class="nav flex-column">
         <li class="nav-item">
           <a class="nav-link" routerLink="/product" routerLinkActive="active">
@@ -61,8 +20,9 @@
         </li>
       </ul>
     </nav>
+    
     <!-- Main Content -->
-    <main class="col-md-10 mt-4">
+    <main class="col-md-10 offset-md-2 mt-4">
       <router-outlet></router-outlet>
     </main>
   </div>

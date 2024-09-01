@@ -1,12 +1,12 @@
 <!-- product-list.component.html -->
-<div class="container">
-  <!-- Create New Product Button -->
-  <button class="btn btn-primary mb-4" (click)="openCreateModal()">
+<!-- <div class="container">
+   Create New Product Button -->
+<!-- <button class="btn btn-primary mb-4" (click)="openCreateModal()">
     Create New Product
-  </button>
+  </button> -->
 
-  <!-- Product Table -->
-  <table class="table table-striped text-center">
+<!-- Product Table -->
+<!-- <table class="table table-striped text-center">
     <thead>
       <tr>
         <th>Title</th>
@@ -50,10 +50,10 @@
       </tr>
     </tbody>
   </table>
-</div>
+</div> -->
 
 <!-- Edit Product Modal -->
-<div
+<!-- <div
   class="modal fade"
   id="editProductModal"
   tabindex="-1"
@@ -72,20 +72,20 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="productForm" (ngSubmit)="updateProduct()">
-          <!-- Title -->
-          <div class="mb-3">
+        <form [formGroup]="productForm" (ngSubmit)="updateProduct()"> -->
+<!-- Title -->
+<!-- <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input
-            type="text"
-            id="title"
-            formControlName="title"
-            class="form-control"
-                  />
-          </div>
+              type="text"
+              id="title"
+              formControlName="title"
+              class="form-control"
+            />
+          </div> -->
 
-          <!-- Description -->
-          <div class="mb-3">
+<!-- Description -->
+<!-- <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea
               id="description"
@@ -93,10 +93,10 @@
               name="description"
               class="form-control"
             ></textarea>
-          </div>
+          </div> -->
 
-          <!-- Price -->
-          <div class="mb-3">
+<!-- Price -->
+<!-- <div class="mb-3">
             <label for="price" class="form-label">Price</label>
             <input
               type="number"
@@ -105,10 +105,10 @@
               name="price"
               class="form-control"
             />
-          </div>
+          </div> -->
 
-          <!-- Stock -->
-          <div class="mb-3">
+<!-- Stock -->
+<!-- <div class="mb-3">
             <label for="stock" class="form-label">Stock</label>
             <input
               type="number"
@@ -117,10 +117,10 @@
               name="stock"
               class="form-control"
             />
-          </div>
+          </div> -->
 
-          <!-- Brand -->
-          <div class="mb-3">
+<!-- Brand -->
+<!-- <div class="mb-3">
             <label for="brand" class="form-label">Brand</label>
             <input
               type="text"
@@ -129,10 +129,10 @@
               name="brand"
               class="form-control"
             />
-          </div>
+          </div> -->
 
-          <!-- Dimensions -->
-          <div class="mb-3">
+<!-- Dimensions -->
+<!-- <div class="mb-3">
             <label for="dimensions" class="form-label">Dimensions</label>
             <input
               type="text"
@@ -142,35 +142,23 @@
               class="form-control"
               placeholder="Width x Height x Depth"
             />
-          </div>
+          </div> -->
 
-          <!-- Warranty Information -->
-          <div class="mb-3">
-            <label for="warrantyInformation" class="form-label">Warranty Information</label>
+<!-- Warranty Information -->
+<!-- <div class="mb-3">
+            <label for="warrantyInformation" class="form-label"
+              >Warranty Information</label
+            >
             <textarea
               id="warrantyInformation"
               formControlName="warrantyInformation"
               name="warrantyInformation"
               class="form-control"
             ></textarea>
-          </div>
+          </div> -->
 
-<!-- Meta Section -->
-<div formGroupName="meta">
-  <!-- Barcode -->
-  <div class="mb-3">
-    <label for="barcode" class="form-label">Barcode</label>
-    <input
-      type="text"
-      id="barcode"
-      formControlName="barcode"
-      class="form-control"
-    />
-  </div>
-</div>
-
-          <!-- Images -->
-          <div class="mb-3">
+<!-- Images -->
+<!-- <div class="mb-3">
             <label for="images" class="form-label">Images</label>
             <input
               type="text"
@@ -180,10 +168,15 @@
               class="form-control"
               placeholder="Comma-separated URLs"
             />
-          </div>
+          </div> -->
 
-          <!-- Thumbnail -->
-          <div class="mb-3">
+<!-- <div class="mb-3">
+            <label for="images" class="form-label">Images</label>
+            <input type="file" (change)="onFilesChange($event)" multiple />
+          </div> -->
+
+<!-- Thumbnail -->
+<!-- <div class="mb-3">
             <label for="thumbnail" class="form-label">Thumbnail</label>
             <input
               type="text"
@@ -192,185 +185,525 @@
               name="thumbnail"
               class="form-control"
             />
-          </div>
+          </div> -->
+<!-- 
+          <div class="mb-3">
+            <label for="thumbnail" class="form-label">Thumbnail</label>
+            <input type="file" (change)="onFileChange($event)" />
+          </div> -->
 
-          <!-- Save Button -->
-          <button type="submit" class="btn btn-primary">Save</button>
+<!-- Save Button -->
+<!-- <button type="submit" class="btn btn-primary">Save</button>
         </form>
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- Create Product Modal -->
-<div
+<!-- <div
   class="modal fade"
   id="createProductModal"
   tabindex="-1"
   aria-labelledby="createProductModalLabel"
   aria-hidden="true"
->
+> -->
 <!-- Modal Content -->
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="createProductModalLabel">Create Product</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
+<!-- <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createProductModalLabel">Create Product</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="productForm" (ngSubmit)="Add()">
+          <! Title -->
+<!-- <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              id="title"
+              formControlName="title"
+              class="form-control"
+            />
+          </div> -->
+
+<!-- Description -->
+<!-- <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              class="form-control"
+            ></textarea>
+          </div> -->
+
+<!-- Category Name -->
+<!-- <div class="mb-3">
+            <label for="categoryID" class="form-label">Category Name</label>
+            <input
+              type="text"
+              id="categoryID"
+              formControlName="categoryName"
+              class="form-control"
+            />
+          </div> -->
+
+<!-- Price -->
+<!-- <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="text"
+              id="price"
+              formControlName="price"
+              class="form-control"
+              pattern="^\d+(\.\d{1,2})?$"
+              title="Please enter a valid number with up to two decimal places."
+            />
+          </div> -->
+
+<!-- Discount Percentage -->
+<!-- <div class="mb-3">
+            <label for="discountPercentage" class="form-label"
+              >Discount Percentage</label
+            >
+            <input
+              type="text"
+              id="discountPercentage"
+              formControlName="discountPercentage"
+              class="form-control"
+              pattern="^\d+(\.\d{1,2})?$"
+              title="Please enter a valid number with up to two decimal places."
+            />
+          </div> -->
+
+<!-- Stock -->
+<!-- <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input
+              type="text"
+              id="stock"
+              formControlName="stock"
+              class="form-control"
+              pattern="^\d+$"
+              title="Please enter a valid whole number."
+            />
+          </div> -->
+
+<!-- Brand -->
+<!-- <div class="mb-3">
+            <label for="brand" class="form-label">Brand</label>
+            <input
+              type="text"
+              id="brand"
+              formControlName="brand"
+              class="form-control"
+            />
+          </div> -->
+
+<!-- Dimensions -->
+<!-- <div class="mb-3">
+            <label for="dimensions" class="form-label">Dimensions</label>
+            <input
+              type="text"
+              id="dimensions"
+              formControlName="dimensions"
+              class="form-control"
+              placeholder="Width x Height x Depth"
+            />
+          </div> -->
+
+<!-- Warranty Information -->
+<!-- <div class="mb-3">
+            <label for="warrantyInformation" class="form-label"
+              >Warranty Information</label
+            >
+            <textarea
+              id="warrantyInformation"
+              formControlName="warrantyInformation"
+              class="form-control"
+            ></textarea>
+          </div> -->
+
+<!-- Images -->
+<!-- <div class="mb-3">
+            <label for="images" class="form-label">Images</label>
+            <input type="file" (change)="onFilesChange($event)" multiple />
+          </div> -->
+
+<!-- Thumbnail -->
+<!-- <div class="mb-3">
+            <label for="thumbnail" class="form-label">Thumbnail</label>
+            <input type="file" (change)="onFileChange($event)" />
+          </div> -->
+
+<!-- Save Button -->
+<!-- <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
     </div>
-    <div class="modal-body">
-      <form [formGroup]="productForm" (ngSubmit)="Add()">
-        <!-- Title -->
-        <div class="mb-3">
-          <label for="title" class="form-label">Title</label>
-          <input
-            type="text"
-            id="title"
-            formControlName="title"
-            class="form-control"
-          />
-        </div>
-      
-        <!-- Description -->
-        <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
-          <textarea
-            id="description"
-            formControlName="description"
-            class="form-control"
-          ></textarea>
-        </div>
-      
-        <!-- Category Name -->
-        <div class="mb-3">
-          <label for="categoryID" class="form-label">Category Name</label>
-          <input
-            type="text"
-            id="categoryID"
-            formControlName="categoryName"
-            class="form-control"
-          />
-        </div>
-      
-        <!-- Price -->
-        <div class="mb-3">
-          <label for="price" class="form-label">Price</label>
-          <input
-            type="text"
-            id="price"
-            formControlName="price"
-            class="form-control"
-            pattern="^\d+(\.\d{1,2})?$"
-            title="Please enter a valid number with up to two decimal places."
-          />
-        </div>
-      
-        <!-- Discount Percentage -->
-        <div class="mb-3">
-          <label for="discountPercentage" class="form-label">Discount Percentage</label>
-          <input
-            type="text"
-            id="discountPercentage"
-            formControlName="discountPercentage"
-            class="form-control"
-            pattern="^\d+(\.\d{1,2})?$"
-            title="Please enter a valid number with up to two decimal places."
-          />
-        </div>
-      
-        <!-- Stock -->
-        <div class="mb-3">
-          <label for="stock" class="form-label">Stock</label>
-          <input
-            type="text"
-            id="stock"
-            formControlName="stock"
-            class="form-control"
-            pattern="^\d+$"
-            title="Please enter a valid whole number."
-          />
-        </div>
-      
-        <!-- Brand -->
-        <div class="mb-3">
-          <label for="brand" class="form-label">Brand</label>
-          <input
-            type="text"
-            id="brand"
-            formControlName="brand"
-            class="form-control"
-          />
-        </div>
-      
-        <!-- Dimensions -->
-        <div class="mb-3">
-          <label for="dimensions" class="form-label">Dimensions</label>
-          <input
-            type="text"
-            id="dimensions"
-            formControlName="dimensions"
-            class="form-control"
-            placeholder="Width x Height x Depth"
-          />
-        </div>
-      
-        <!-- Warranty Information -->
-        <div class="mb-3">
-          <label for="warrantyInformation" class="form-label">Warranty Information</label>
-          <textarea
-            id="warrantyInformation"
-            formControlName="warrantyInformation"
-            class="form-control"
-          ></textarea>
-        </div>
-      
-<!-- Meta Section -->
-<div formGroupName="meta">
-  <!-- Barcode -->
-  <div class="mb-3">
-    <label for="barcode" class="form-label">Barcode</label>
-    <input
-      type="text"
-      id="barcode"
-      formControlName="barcode"
-      class="form-control"
-    />
   </div>
-</div>
-      
-        <!-- Images -->
-        <div class="mb-3">
-          <label for="images" class="form-label">Images</label>
-          <input
-            type="file"
-            id="images"
-            (change)="onFilesChange($event, 'images')"
-            multiple
-            class="form-control"
+</div> -->
+
+<!-- Skeleton Loader -->
+
+<ng-template #productList>
+  <div *ngFor="let product of products">
+    <!-- Your product card HTML here -->
+    <div class="product-card">
+      <img [src]="product.image" alt="Product Image" />
+      <h3>{{ product.title }}</h3>
+      <p>{{ product.description }}</p>
+      <p>{{ product.price | currency }}</p>
+      <!-- Add more product details here -->
+    </div>
+  </div>
+</ng-template>
+
+<div class="container">
+  <!-- Create New Product Button -->
+  <button class="btn btn-primary mb-4" (click)="openCreateModal()">
+    Create New Product
+  </button>
+
+  <!-- Product Table -->
+  <table class="table table-striped text-center">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Image</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Brand</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.title }}</td>
+        <td>
+          <img
+            [src]="product.images[0]"
+            alt="Product Image"
+            class="img-thumbnail"
+            [src]="product.images[0]"
+            alt="Product Image"
+            class="img-thumbnail"
+            style="width: 100px; height: auto"
           />
+        </td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.price | currency }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.brand }}</td>
+        <td>
+          <button class="btn btn-sm btn-info" (click)="openEditModal(product)">
+            Edit
+          </button>
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="deleteProduct(product._id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Create Product Modal -->
+  <div
+    class="modal fade"
+    id="createProductModal"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create New Product</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-      
-        <!-- Thumbnail -->
-        <div class="mb-3">
-          <label for="thumbnail" class="form-label">Thumbnail</label>
-          <input
-            type="file"
-            id="thumbnail"
-            (change)="onFileChange($event, 'image')"
-            class="form-control"
-          />
+        <div class="modal-body">
+          <form [formGroup]="productForm" (ngSubmit)="Add()">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                formControlName="title"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                formControlName="description"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                formControlName="price"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="discountPercentage" class="form-label"
+                >Discount Percentage</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="discountPercentage"
+                formControlName="discountPercentage"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="categoryName" class="form-label">Category</label>
+              <input
+                type="text"
+                class="form-control"
+                id="categoryName"
+                formControlName="categoryName"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="stock" class="form-label">Stock</label>
+              <input
+                type="number"
+                class="form-control"
+                id="stock"
+                formControlName="stock"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="brand" class="form-label">Brand</label>
+              <input
+                type="text"
+                class="form-control"
+                id="brand"
+                formControlName="brand"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="dimensions" class="form-label">Dimensions</label>
+              <input
+                type="text"
+                class="form-control"
+                id="dimensions"
+                formControlName="dimensions"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="warrantyInformation" class="form-label"
+                >Warranty Information</label
+              >
+              <textarea
+                class="form-control"
+                id="warrantyInformation"
+                formControlName="warrantyInformation"
+              ></textarea>
+            </div>
+            <!-- <div class="mb-3">
+              <label for="meta-barcode" class="form-label">Barcode</label>
+              <input
+                type="text"
+                class="form-control"
+                id="meta-barcode"
+                formControlName="meta.barcode"
+              />
+            </div> -->
+            <div class="mb-3">
+              <label for="images" class="form-label">Product Images</label>
+              <input
+                type="file"
+                class="form-control"
+                id="images"
+                (change)="onFilesChange($event)"
+                multiple
+              />
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Thumbnail Image</label>
+              <input
+                type="file"
+                class="form-control"
+                id="image"
+                (change)="onFileChange($event)"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+          </form>
         </div>
-      
-        <!-- Save Button -->
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div
+    class="modal fade"
+    id="editProductModal"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Product</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="productForm" (ngSubmit)="updateProduct()">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                formControlName="title"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                formControlName="description"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                formControlName="price"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="discountPercentage" class="form-label"
+                >Discount Percentage</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="discountPercentage"
+                formControlName="discountPercentage"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="categoryName" class="form-label">Category</label>
+              <input
+                type="text"
+                class="form-control"
+                id="categoryName"
+                formControlName="categoryName"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="stock" class="form-label">Stock</label>
+              <input
+                type="number"
+                class="form-control"
+                id="stock"
+                formControlName="stock"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="brand" class="form-label">Brand</label>
+              <input
+                type="text"
+                class="form-control"
+                id="brand"
+                formControlName="brand"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="dimensions" class="form-label">Dimensions</label>
+              <input
+                type="text"
+                class="form-control"
+                id="dimensions"
+                formControlName="dimensions"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="warrantyInformation" class="form-label"
+                >Warranty Information</label
+              >
+              <textarea
+                class="form-control"
+                id="warrantyInformation"
+                formControlName="warrantyInformation"
+              ></textarea>
+            </div>
+            <!-- <div class="mb-3">
+              <label for="meta-barcode" class="form-label">Barcode</label>
+              <input
+                type="text"
+                class="form-control"
+                id="meta-barcode"
+                formControlName="meta.barcode"
+              />
+            </div> -->
+            <div class="mb-3">
+              <label for="images" class="form-label">Product Images</label>
+              <input
+                type="file"
+                class="form-control"
+                id="images"
+                (change)="onFilesChange($event)"
+                multiple
+              />
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Thumbnail Image</label>
+              <input
+                type="file"
+                class="form-control"
+                id="image"
+                (change)="onFileChange($event)"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Update Product
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
+<div *ngIf="isLoading" class="skeleton-table">
+  <div class="skeleton-row" *ngFor="let _ of [1, 2, 3, 4, 5]">
+    <div class="skeleton-cell"></div>
+    <div class="skeleton-cell"></div>
+    <div class="skeleton-cell"></div>
+    <div class="skeleton-cell"></div>
+    <div class="skeleton-cell"></div>
+    <div class="skeleton-cell"></div>
+    <div class="skeleton-cell"></div>
+  </div>
 </div>
-

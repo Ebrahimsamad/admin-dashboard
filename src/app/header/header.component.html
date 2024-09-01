@@ -1,18 +1,39 @@
 <nav class="navbar">
-  <div class="navbar-brand d-flex align-items-center gap-3">
-    <a routerLink="/dashboard">
+  <div class="navbar-left">
+    <a routerLink="/dashboard" class="logo-link">
       <img src="loogo.png" alt="ITIANS Electronics" class="logo" />
+      <span class="head h3">Admins</span>
     </a>
-    <a routerLink="/dashboard" class="head h3 text-decoration-none">Admins</a>
   </div>
-  <div class="navbar-menu">
+
+  <div class="navbar-center">
+    <ul class="nav-links">
+      <li class="nav-item">
+        <a routerLink="/product" routerLinkActive="active" class="nav-link"
+          >Products</a
+        >
+      </li>
+      <li class="nav-item">
+        <a routerLink="/category" routerLinkActive="active" class="nav-link"
+          >Category</a
+        >
+      </li>
+      <li class="nav-item">
+        <a routerLink="/admin" routerLinkActive="active" class="nav-link"
+          >Admin</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <div class="navbar-right">
     <button
       *ngIf="isAuthenticated; else loginButton"
       class="btn btn-outline-light"
       (click)="onLogout()"
       [disabled]="isLoggingOut"
     >
-      <ng-container *ngIf="!isLoggingOut; else loading"> Log Out </ng-container>
+      <ng-container *ngIf="!isLoggingOut; else loading">Log Out</ng-container>
       <ng-template #loading>
         <span
           class="spinner-border spinner-border-sm"

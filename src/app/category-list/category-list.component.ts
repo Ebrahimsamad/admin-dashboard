@@ -14,13 +14,12 @@ import { CategoryService } from '../services/Category/category.service';
   styleUrls: ['./category-list.component.css'], // Updated to styleUrls
 })
 export class CategoryListComponent implements OnInit {
-
   categories: Category[] = []; // Array of categories
 
   defaultCategory: Category = {
-    _id:"",
+    _id: '',
     name: '',
-    __v : 0
+    __v: 0,
   };
   newCategory: Category = { ...this.defaultCategory };
   selectedCategory: Category = { ...this.defaultCategory }; // Holds the category to be edited
@@ -30,10 +29,8 @@ export class CategoryListComponent implements OnInit {
   constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
-    
     this.loadCategories(); // Load categories when the component initializes
-    console.log("this.categories = " + this.categories )
-
+    console.log('this.categories = ' + this.categories);
   }
 
   openEditModal(category: Category): void {
@@ -49,64 +46,87 @@ export class CategoryListComponent implements OnInit {
   createCategory(): void {
     // Prepare the category data without _id and __v
     const { _id, __v, ...categoryToCreate } = this.newCategory;
-    console.log("categoryToCreate = ", JSON.stringify(categoryToCreate, null, 2));
-  
-    this.categoryService.createCategory(categoryToCreate).pipe(
-      tap((category: Category) => {
-        console.log('Category created:', category);
-        this.categories.push(category); // Add the newly created category to the list
-        this.newCategory = { ...this.defaultCategory }; // Reset the new category object
-        this.loadCategories();
-      }),
-      catchError((error) => {
-        console.error('Error creating category:', error);
-        this.errorMessage = 'Failed to create category. Please try again later.';
-        return of(null); // Return a null value to complete the observable
-      })
-    ).subscribe(() => this.closeModal('createCategoryModal'));
+    console.log(
+      'categoryToCreate = ',
+      JSON.stringify(categoryToCreate, null, 2)
+    );
+
+    this.categoryService
+      .createCategory(categoryToCreate)
+      .pipe(
+        tap((category: Category) => {
+          console.log('Category created:', category);
+          this.categories.push(category); // Add the newly created category to the list
+          this.newCategory = { ...this.defaultCategory }; // Reset the new category object
+          this.loadCategories();
+        }),
+        catchError((error) => {
+          console.error('Error creating category:', error);
+          this.errorMessage =
+            'Failed to create category. Please try again later.';
+          return of(null); // Return a null value to complete the observable
+        })
+      )
+      .subscribe(() => this.closeModal('createCategoryModal'));
   }
-  
 
   deleteCategory(id: string): void {
     if (confirm('Are you sure you want to delete this category?')) {
-      this.categoryService.deleteCategoryById(id).pipe(
-        tap(() => {
-          this.categories = this.categories.filter(category => category._id !== id);
-        }),
-        catchError((error) => {
-          console.error('Error deleting category:', error);
-          this.errorMessage = 'Failed to delete category. Please try again later.';
-          return of(null); // Return a null value to complete the observable
-        })
-      ).subscribe();
+      this.categoryService
+        .deleteCategoryById(id)
+        .pipe(
+          tap(() => {
+            console.log(
+              'Category deleted successfully on the server. Removing from frontend.'
+            );
+            this.categories = this.categories.filter(
+              (category) => category._id !== id
+            );
+          }),
+          catchError((error) => {
+            console.error('Error deleting category:', error);
+            this.errorMessage =
+              'Failed to delete category. Please try again later.';
+            return of(null);
+          })
+        )
+        .subscribe();
     }
   }
 
   onCreateSubmit() {
-    console.log("this.newCategory = ", JSON.stringify(this.newCategory, null, 2));
+    console.log(
+      'this.newCategory = ',
+      JSON.stringify(this.newCategory, null, 2)
+    );
 
     this.createCategory();
   }
   onEditSubmit(): void {
     if (!this.selectedCategory._id) {
-      this.errorMessage = 'Category ID is missing. Please select a valid category.';
+      this.errorMessage =
+        'Category ID is missing. Please select a valid category.';
       return;
     }
     // Create a new category object excluding _id and __v
     const { __v, _id, ...categoryData } = this.selectedCategory;
-    console.log("this.selectedCategory._id = " + this.selectedCategory._id);
-    console.log("categoryData = " + JSON.stringify(categoryData, null, 2));
-    this.categoryService.updateCategoryById(this.selectedCategory._id, categoryData).pipe(
-      tap(() => {
-        this.closeModal('editCategoryModal');
-        this.loadCategories();
-      }),
-      catchError((error) => {
-        console.error('Error updating category:', error);
-        this.errorMessage = 'Failed to update category. Please try again later.';
-        return of(null); // Return a null value to complete the observable
-      })
-    ).subscribe();
+    console.log('this.selectedCategory._id = ' + this.selectedCategory._id);
+    console.log('categoryData = ' + JSON.stringify(categoryData, null, 2));
+    this.categoryService
+      .updateCategoryById(this.selectedCategory._id, categoryData)
+      .pipe(
+        tap(() => {
+          this.closeModal('editCategoryModal');
+          this.loadCategories();
+        }),
+        catchError((error) => {
+          console.error('Error updating category:', error);
+          this.errorMessage =
+            'Failed to update category. Please try again later.';
+          return of(null); // Return a null value to complete the observable
+        })
+      )
+      .subscribe();
   }
 
   private showModal(modalId: string): void {
@@ -128,25 +148,26 @@ export class CategoryListComponent implements OnInit {
   }
 
   private loadCategories(): void {
-    this.categoryService.getCategories().pipe(
-      tap((response) => {
-        console.log('Response received:', response);
-        this.categories = response.categories; // Ensure this is an array
-        console.log("this.categories = " + this.categories )
-        if (this.categories.length > 0) {
-          this.selectedCategory = this.categories[0];
-        } else {
-          console.log('No categories available.');
-        }
-      }),
-      catchError((error) => {
-        console.error('Error fetching categories:', error);
-        this.errorMessage = 'Failed to load categories. Please try again later.';
-        return of({ categories: [], message: 'Failed to load categories' }); // Return a proper object
-      })
-    ).subscribe();
+    this.categoryService
+      .getCategories()
+      .pipe(
+        tap((response) => {
+          console.log('Response received:', response);
+          this.categories = response.categories; // Ensure this is an array
+          console.log('this.categories = ' + this.categories);
+          if (this.categories.length > 0) {
+            this.selectedCategory = this.categories[0];
+          } else {
+            console.log('No categories available.');
+          }
+        }),
+        catchError((error) => {
+          console.error('Error fetching categories:', error);
+          this.errorMessage =
+            'Failed to load categories. Please try again later.';
+          return of({ categories: [], message: 'Failed to load categories' }); // Return a proper object
+        })
+      )
+      .subscribe();
   }
-  
-  
-  
 }

@@ -1,22 +1,87 @@
+/* General Navbar Styles */
 .navbar {
   background-color: #2d5356;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1000;
+}
+
+/* Left Section: Logo */
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.logo-link:hover {
+  transform: scale(1.05);
 }
 
 .logo {
   height: 40px;
+  transition: transform 0.3s ease;
 }
 
 .head {
   color: #d09423;
+  transition: color 0.3s ease;
+}
+
+/* Center Section: Navigation Links */
+.navbar-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  color: #ffffff;
+  font-size: 1.2rem;
+  text-decoration: none;
+  padding: 5px 10px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  background-color: #e6a23c;
+  color: #ffffff;
+  transform: scale(1.05);
+  border-radius: 5px;
+}
+
+/* Right Section: Logout Button */
+.navbar-right {
+  display: flex;
+  align-items: center;
 }
 
 .btn-outline-light {
   color: #fff;
   border-color: #d09423;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .btn-outline-light:hover {
@@ -30,7 +95,58 @@
   border-width: 0.2em;
 }
 
-.navbar-menu {
-  display: flex;
-  align-items: center;
+.btn-outline-light:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
+
+/* For tablets and smaller devices */
+@media (max-width: 992px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-center {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar-right {
+    margin-top: 10px;
+  }
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .logo {
+    height: 30px;
+  }
+
+  .head {
+    font-size: 1.5rem;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    padding: 8px 12px;
+  }
+
+  .btn-outline-light {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
 }

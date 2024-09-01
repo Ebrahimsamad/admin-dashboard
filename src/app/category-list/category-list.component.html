@@ -3,6 +3,7 @@
     Create New Category
   </button>
   <br /><br />
+
   <table class="table table-striped">
     <thead>
       <tr>
@@ -11,20 +12,98 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let category of categories" class="fade-in">
-        <td class="col-11">{{ category.name }}</td>
-        <td class="col-1">
-          <button class="btn btn-sm edit-btn" (click)="openEditModal(category)">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button
-            class="btn btn-danger btn-sm ms-2 delete-btn"
-            (click)="deleteCategory(category._id)"
-          >
-            <i class="fas fa-trash"></i>
-          </button>
-        </td>
-      </tr>
+      <!-- Skeleton Loader Rows -->
+      <ng-container *ngIf="!categories.length">
+        <tr>
+          <td class="col-11">
+            <div class="skeleton-loader" style="width: 90%"></div>
+          </td>
+          <td class="col-1">
+            <div class="d-flex justify-content-center">
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px; margin-right: 10px"
+              ></div>
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px"
+              ></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-11">
+            <div class="skeleton-loader" style="width: 90%"></div>
+          </td>
+          <td class="col-1">
+            <div class="d-flex justify-content-center">
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px; margin-right: 10px"
+              ></div>
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px"
+              ></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-11">
+            <div class="skeleton-loader" style="width: 90%"></div>
+          </td>
+          <td class="col-1">
+            <div class="d-flex justify-content-center">
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px; margin-right: 10px"
+              ></div>
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px"
+              ></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-11">
+            <div class="skeleton-loader" style="width: 90%"></div>
+          </td>
+          <td class="col-1">
+            <div class="d-flex justify-content-center">
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px; margin-right: 10px"
+              ></div>
+              <div
+                class="skeleton-loader"
+                style="width: 40px; height: 25px"
+              ></div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+
+      <!-- Actual Data Rows -->
+      <ng-container *ngIf="categories.length">
+        <tr *ngFor="let category of categories" class="fade-in">
+          <td class="col-11">{{ category.name }}</td>
+          <td class="col-1">
+            <button
+              class="btn btn-sm edit-btn"
+              (click)="openEditModal(category)"
+            >
+              <i class="fas fa-edit"></i>
+            </button>
+            <button
+              class="btn btn-danger btn-sm ms-2 delete-btn"
+              (click)="deleteCategory(category._id)"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>

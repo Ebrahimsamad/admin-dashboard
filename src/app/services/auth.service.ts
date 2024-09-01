@@ -19,12 +19,21 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response) => {
-        this.handleAuthentication(response.token, response.user);
+        // Check if the user is an admin before proceeding
+        if (response.user.role === 'admin') {
+          this.handleAuthentication(response.token, response.user);
+        } else {
+          console.log('You do not have permission to access this application.');
+          throw new Error(
+            'You do not have permission to access this application.'
+          );
+          this.isAuthenticated.next(false);
+          this.router.navigate(['/login']);
+        }
       }),
       catchError(this.handleError)
     );
   }
-
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

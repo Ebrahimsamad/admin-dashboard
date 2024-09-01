@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Product } from '../../../model/Product';
@@ -15,18 +19,27 @@ export class ProductService {
   private getAuthHeaders(): HttpHeaders {
     let authToken = localStorage.getItem('token');
     return new HttpHeaders({
-      'Authorization': `${authToken}`,
-      'Content-Type': 'application/json'
+      Authorization: `${authToken}`,
+      'Content-Type': 'application/json',
     });
   }
 
   // Fetch all products
-  getProducts(): Observable<{ message: string, products: any[] }> {
+  getProducts(): Observable<{ message: string; products: any[] }> {
     const getAllProductsURL = `https://e-commerce-api-fawn.vercel.app/search?product`;
-    return this.http.get<{ message: string, products: any[] }>(getAllProductsURL, { headers: this.getAuthHeaders() }).pipe(
-      tap((data) => console.log('Products fetched:', JSON.stringify(data.products, null, 2))),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<{ message: string; products: any[] }>(getAllProductsURL, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(
+        tap((data) =>
+          console.log(
+            'Products fetched:',
+            JSON.stringify(data.products, null, 2)
+          )
+        ),
+        catchError(this.handleError)
+      );
   }
 
   // Fetch a single product by ID
@@ -40,24 +53,21 @@ export class ProductService {
 
   // Create a new product
   createProduct(data: FormData): Observable<any> {
-      // Convert form data to a URL-encoded string
-  const formDataString = new URLSearchParams(data as any).toString();
-  console.log('Form data as URL-encoded string:', formDataString);    
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      'Authorization': `${token}`,
-      'Content-Type': 'application/json'
+      Authorization: token || '', // Use the token directly from localStorage
     });
-    return this.http.post(`${this.productsUrl}`, data , { headers }   );
+    return this.http.post(this.productsUrl, data, { headers });
   }
 
   // Update a product by ID
   updateProductById(id: string, formData: FormData): Observable<Product> {
     const url = `${this.productsUrl}/${id}`;
-    return this.http.patch<Product>(url, formData, { headers: this.getAuthHeaders() }).pipe(
-      tap((data) => console.log('Product updated:', data)),
-      catchError(this.handleError)
-    );
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token || '', // Use the token directly from localStorage
+    });
+    return this.http.patch<Product>(url, formData, { headers });
   }
 
   // Delete a product by ID
@@ -77,9 +87,15 @@ export class ProductService {
       errorMessage = `An error occurred: ${error.error.message}`;
     } else {
       // Backend error
-      errorMessage = `Server returned code: ${error.status}, error message is: ${error.message}`;
+      errorMessage = `Server returned code: ${
+        error.status
+      }, error message is: ${error.message}, response body: ${JSON.stringify(
+        error.error
+      )}`;
     }
     console.error(errorMessage); // Log the error message
-    return throwError(() => new Error('Something went wrong; please try again later.'));
+    return throwError(
+      () => new Error('Something went wrong; please try again later.')
+    );
   }
 }

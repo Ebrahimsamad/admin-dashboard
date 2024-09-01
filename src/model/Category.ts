@@ -1,5 +1,5 @@
 export interface Category {
 _id:string,
-name: string
-
+name: string,
+__v:number
 }

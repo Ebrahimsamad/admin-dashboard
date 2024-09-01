@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Product } from '../../model/Product';
+import { Product } from '../../../model/Product';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +12,19 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders(): HttpHeaders {
+    let authToken = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `${authToken}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
   // Fetch all products
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.productsUrl).pipe(
-      tap((data) => console.log('Products fetched:', data)),
+  getProducts(): Observable<{ message: string, products: any[] }> {
+    const getAllProductsURL = `https://e-commerce-api-fawn.vercel.app/search?product`;
+    return this.http.get<{ message: string, products: any[] }>(getAllProductsURL, { headers: this.getAuthHeaders() }).pipe(
+      tap((data) => console.log('Products fetched:', JSON.stringify(data.products, null, 2))),
       catchError(this.handleError)
     );
   }
@@ -23,24 +32,29 @@ export class ProductService {
   // Fetch a single product by ID
   getProductById(id: string): Observable<Product> {
     const url = `${this.productsUrl}/${id}`;
-    return this.http.get<Product>(url).pipe(
+    return this.http.get<Product>(url, { headers: this.getAuthHeaders() }).pipe(
       tap((data) => console.log('Product fetched:', data)),
       catchError(this.handleError)
     );
   }
 
   // Create a new product
-  createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.productsUrl, product).pipe(
-      tap((data) => console.log('Product created:', data)),
-      catchError(this.handleError)
-    );
+  createProduct(data: FormData): Observable<any> {
+      // Convert form data to a URL-encoded string
+  const formDataString = new URLSearchParams(data as any).toString();
+  console.log('Form data as URL-encoded string:', formDataString);    
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.productsUrl}`, data , { headers }   );
   }
 
   // Update a product by ID
-  updateProductById(id: string, product: Product): Observable<Product> {
+  updateProductById(id: string, formData: FormData): Observable<Product> {
     const url = `${this.productsUrl}/${id}`;
-    return this.http.put<Product>(url, product).pipe(
+    return this.http.patch<Product>(url, formData, { headers: this.getAuthHeaders() }).pipe(
       tap((data) => console.log('Product updated:', data)),
       catchError(this.handleError)
     );
@@ -49,15 +63,14 @@ export class ProductService {
   // Delete a product by ID
   deleteProductById(id: string): Observable<{}> {
     const url = `${this.productsUrl}/${id}`;
-    return this.http.delete(url).pipe(
-      tap((data) => console.log('Product deleted:', data)),
+    return this.http.delete(url, { headers: this.getAuthHeaders() }).pipe(
+      tap(() => console.log('Product deleted')),
       catchError(this.handleError)
     );
   }
 
   // Error handling method
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.log('Handel Error');
     let errorMessage: string;
     if (error.error instanceof ErrorEvent) {
       // Client-side or network error
@@ -67,6 +80,6 @@ export class ProductService {
       errorMessage = `Server returned code: ${error.status}, error message is: ${error.message}`;
     }
     console.error(errorMessage); // Log the error message
-    return throwError('Something went wrong; please try again later.');
+    return throwError(() => new Error('Something went wrong; please try again later.'));
   }
 }

@@ -3,7 +3,7 @@ import { Modal } from 'bootstrap';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { CommonModule } from '@angular/common';
 import { catchError, of, tap } from 'rxjs';
-import { Category } from '../model/Category';
+import { Category } from '../../model/Category';
 import { CategoryService } from '../services/Category/category.service';
 
 @Component({
@@ -11,132 +11,114 @@ import { CategoryService } from '../services/Category/category.service';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './category-list.component.html',
-  styleUrl: './category-list.component.css',
+  styleUrls: ['./category-list.component.css'], // Updated to styleUrls
 })
 export class CategoryListComponent implements OnInit {
+
   categories: Category[] = []; // Array of categories
 
-  defaultCategory: any = {
+  defaultCategory: Category = {
+    _id:"",
     name: '',
+    __v : 0
   };
-  newCategory: any = {
-    name: '',
-  };
+  newCategory: Category = { ...this.defaultCategory };
+  selectedCategory: Category = { ...this.defaultCategory }; // Holds the category to be edited
 
-  selectedCategory: any = {
-    name: '',
-  }; // Holds the category to be edited
+  errorMessage: string | null = null; // Improved type
 
-  errorMessage: any;
   constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
-    this.loadcategories(); // Load categories when the component initializes
+    
+    this.loadCategories(); // Load categories when the component initializes
+    console.log("this.categories = " + this.categories )
+
   }
 
-  openEditModal(category: Category) {
+  openEditModal(category: Category): void {
     this.selectedCategory = { ...category }; // Copy the selected category to avoid direct mutation
-    const modalElement = document.getElementById('editCategoryModal');
-    if (modalElement) {
-      const modal = new Modal(modalElement);
-      modal.show();
-    }
+    this.showModal('editCategoryModal');
   }
 
-  openCreateModal() {
-    this.newCategory = this.defaultCategory;
-    console.log(
-      'this.newCategory.name = ' + this.newCategory.name,
-      'this.defaultCategory.name = ' + this.defaultCategory.name
-    );
-    const modalElement = document.getElementById('createCategoryModal');
-    if (modalElement) {
-      const modal = new Modal(modalElement);
-      modal.show();
-    }
+  openCreateModal(): void {
+    this.newCategory = { ...this.defaultCategory };
+    this.showModal('createCategoryModal');
   }
 
-  createcategory(): void {
-    this.categoryService
-      .createCategory(this.newCategory)
-      .pipe(
-        tap((category: Category) => {
-          console.log('category created:', category);
-          this.categories.push(category); // Add the newly created category to the list
-          console.log(
-            'this.newCategory.name = ' + this.newCategory.name,
-            'this.defaultCategory.name = ' + this.defaultCategory.name
-          );
-          this.newCategory.name = ''; // Reset the new category object
-          this.loadcategories();
-        }),
-        catchError((error) => {
-          console.log(this.newCategory);
-          console.error('Error creating category:', error);
-          // Handle error accordingly
-          return []; // Return an empty array or appropriate value to complete the observable
-        })
-      )
-      .subscribe();
-
-    // Close the modal (if using Bootstrap)
-    const modalElement = document.getElementById('createCategoryModal') as any;
-    if (modalElement) {
-      const modal = Modal.getInstance(modalElement);
-      if (modal) {
-        modal.hide();
-      }
-    }
+  createCategory(): void {
+    // Prepare the category data without _id and __v
+    const { _id, __v, ...categoryToCreate } = this.newCategory;
+    console.log("categoryToCreate = ", JSON.stringify(categoryToCreate, null, 2));
+  
+    this.categoryService.createCategory(categoryToCreate).pipe(
+      tap((category: Category) => {
+        console.log('Category created:', category);
+        this.categories.push(category); // Add the newly created category to the list
+        this.newCategory = { ...this.defaultCategory }; // Reset the new category object
+        this.loadCategories();
+      }),
+      catchError((error) => {
+        console.error('Error creating category:', error);
+        this.errorMessage = 'Failed to create category. Please try again later.';
+        return of(null); // Return a null value to complete the observable
+      })
+    ).subscribe(() => this.closeModal('createCategoryModal'));
   }
+  
 
   deleteCategory(id: string): void {
     if (confirm('Are you sure you want to delete this category?')) {
-      this.categoryService.deleteCategoryById(id).subscribe({
-        next: () => {
-          // Remove the deleted category from the local list
-          this.categories = this.categories.filter(
-            (category) => category._id !== id
-          );
-        },
-        error: (err: any) => (this.errorMessage = err),
-      });
-    }
-  }
-
-  onEditSubmit(): void {
-    if (!this.selectedCategory._id) {
-      this.errorMessage =
-        'category ID is missing. Please select a valid category.';
-      return;
-    }
-    // Create a new category object excluding _id and __v
-    const { _id, __v, ...categoryData } = this.selectedCategory;
-    // console.log('Submitting category:', JSON.stringify(categoryData, null, 2));
-    this.categoryService
-      .updateCategoryById(this.selectedCategory._id, categoryData)
-      .pipe(
+      this.categoryService.deleteCategoryById(id).pipe(
         tap(() => {
-          this.closeModal();
-          this.loadcategories();
+          this.categories = this.categories.filter(category => category._id !== id);
         }),
         catchError((error) => {
-          this.handleError(error);
-          return of(null);
+          console.error('Error deleting category:', error);
+          this.errorMessage = 'Failed to delete category. Please try again later.';
+          return of(null); // Return a null value to complete the observable
         })
-      )
-      .subscribe();
+      ).subscribe();
+    }
   }
 
   onCreateSubmit() {
-    this.createcategory();
+    console.log("this.newCategory = ", JSON.stringify(this.newCategory, null, 2));
+
+    this.createCategory();
+  }
+  onEditSubmit(): void {
+    if (!this.selectedCategory._id) {
+      this.errorMessage = 'Category ID is missing. Please select a valid category.';
+      return;
+    }
+    // Create a new category object excluding _id and __v
+    const { __v, _id, ...categoryData } = this.selectedCategory;
+    console.log("this.selectedCategory._id = " + this.selectedCategory._id);
+    console.log("categoryData = " + JSON.stringify(categoryData, null, 2));
+    this.categoryService.updateCategoryById(this.selectedCategory._id, categoryData).pipe(
+      tap(() => {
+        this.closeModal('editCategoryModal');
+        this.loadCategories();
+      }),
+      catchError((error) => {
+        console.error('Error updating category:', error);
+        this.errorMessage = 'Failed to update category. Please try again later.';
+        return of(null); // Return a null value to complete the observable
+      })
+    ).subscribe();
   }
 
-  handleError(error: any) {
-    throw new Error('Method not implemented.');
+  private showModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      const modal = new Modal(modalElement);
+      modal.show();
+    }
   }
 
-  private closeModal(): void {
-    const modalElement = document.getElementById('editCategoryModal');
+  private closeModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
     if (modalElement) {
       const modal = Modal.getInstance(modalElement);
       if (modal) {
@@ -145,27 +127,26 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-  // Load categories (can be done in ngOnInit or other lifecycle hooks)
-  loadcategories(): void {
-    this.categoryService.getCategories().subscribe({
-      next: (categories: Category[]) => {
-        // Check if the categories are fetched correctly
-        console.log('Fetched categories: ', categories);
-
-        // Assign categories to the local variable
-        this.categories = categories;
-
-        // Log the first category after assignment
+  private loadCategories(): void {
+    this.categoryService.getCategories().pipe(
+      tap((response) => {
+        console.log('Response received:', response);
+        this.categories = response.categories; // Ensure this is an array
+        console.log("this.categories = " + this.categories )
         if (this.categories.length > 0) {
-          console.log('First category: ', this.categories[0]);
           this.selectedCategory = this.categories[0];
         } else {
           console.log('No categories available.');
         }
-      },
-      error: (error: any) => {
-        console.error('Error fetching categories: ', error);
-      },
-    });
+      }),
+      catchError((error) => {
+        console.error('Error fetching categories:', error);
+        this.errorMessage = 'Failed to load categories. Please try again later.';
+        return of({ categories: [], message: 'Failed to load categories' }); // Return a proper object
+      })
+    ).subscribe();
   }
+  
+  
+  
 }

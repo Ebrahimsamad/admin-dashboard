@@ -1,29 +1,26 @@
-export interface Dimensions {
-    width: number;
-    height: number;
-    depth: number;
-}
-
-export interface Meta {
-    createdAt: string; // ISO 8601 date string
-    updatedAt: string; // ISO 8601 date string
-    barcode: string;
-}
-
 export interface Product {
-    _id: string; // GUID as string
+    _id: string;
     title: string;
     description: string;
-    categoryID: number;
+    categoryID: {
+      _id: string;
+      name: string;
+    };
     price: number;
     discountPercentage: number;
     stock: number;
     brand: string;
-    dimensions: Dimensions;
+    dimensions: string;
     warrantyInformation: string;
-    availabilityStatus: string;
-    returnPolicy: string;
-    meta: Meta;
-    images: string[]; // Array of image URLs
-    thumbnail: string; // URL of the thumbnail image
-}
+    images: string[];
+    image: string;
+    rating: number;
+    reviews: any[]; // Adjust type as needed based on actual review structure
+    createdAt: string; // ISO date string
+    updatedAt: string; // ISO date string
+    meta: {
+      barcode: string;
+    };
+    __v: number;
+  }
+  

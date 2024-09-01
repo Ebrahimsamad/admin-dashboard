@@ -1,97 +1,169 @@
 import { Component, OnInit } from '@angular/core';
-// import { ProductService } from '../../../Services/Product/product.service'; // Assuming you have a service to manage products
 import { Modal } from 'bootstrap';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormControl, FormGroup, Validators ,FormBuilder} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-// import { Product } from '../../../model/Product';
 import { catchError, of, tap } from 'rxjs';
-import { Product } from '../model/Product';
+import { Product } from '../../model/Product';
 import { ProductService } from '../services/Product/product.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule , ReactiveFormsModule],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css',
+  styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-  products: Product[] = []; // Array of products
 
-  defaultProduct: any = {
-    title: 'Product Name',
-    description: 'Description',
-    categoryID: 123123,
-    price: 199.99,
-    discountPercentage: 10,
-    stock: 50,
-    brand: 'SoundMagic',
-    dimensions: {
-      width: 15,
-      height: 20,
-      depth: 5,
+  defaultProduct: Product = {
+    _id: '',
+    title: 'Default Product Title',
+    description: 'Default product description goes here.',
+    categoryID: {
+      _id: '',
+      name: 'Default Category'
     },
-    warrantyInformation: '2-year manufacturer warranty',
-    availabilityStatus: 'available',
-    returnPolicy: '30-day return policy with full refund',
+    price: 0,
+    discountPercentage: 0,
+    stock: 0,
+    brand: 'Default Brand',
+    dimensions: 'Default Dimensions',
+    warrantyInformation: 'Default Warranty Information',
+    images: [],
+    image: '',
+    rating: 0,
+    reviews: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     meta: {
-      createdAt: '2024-01-15T08:00:00.000Z',
-      updatedAt: '2024-08-01T08:00:00.000Z',
-      barcode: '1234567890123',
+      barcode: 'DefaultBarcode'
     },
-    images: [
-      'https://example.com/images/wireless-headphones-front.jpg',
-      'https://example.com/images/wireless-headphones-side.jpg',
-    ],
-    thumbnail: 'https://example.com/images/wireless-headphones-thumbnail.jpg',
+    __v: 0
   };
+  
 
-  newProduct: any; // Empty object to hold the new product
+  products: Product[] = [];
+  newProduct: Product = this.defaultProduct;
+  selectedProduct: Product = this.defaultProduct;
+  errorMessage: string = '';
+  productForm!: FormGroup;
 
-  selectedProduct: any = {
-    title: 'Product Name',
-    description: 'description',
-    categoryID: 123123,
-    price: 199.99,
-    discountPercentage: 10,
-    stock: 50,
-    brand: 'SoundMagic',
-    dimensions: {
-      width: 15,
-      height: 20,
-      depth: 5,
-    },
-    warrantyInformation: '2-year manufacturer warranty',
-    availabilityStatus: 'available',
-    returnPolicy: '30-day return policy with full refund',
-    meta: {
-      createdAt: '2024-01-15T08:00:00.000Z',
-      updatedAt: '2024-08-01T08:00:00.000Z',
-      barcode: '1234567890123',
-    },
-    images: [
-      'https://example.com/images/wireless-headphones-front.jpg',
-      'https://example.com/images/wireless-headphones-side.jpg',
-    ],
-    thumbnail: 'https://example.com/images/wireless-headphones-thumbnail.jpg',
-  };
-
-  errorMessage: any;
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.newProduct = this.defaultProduct;
-    this.loadProducts(); // Load products when the component initializes
+    this.loadProducts();
+    this.initializeForm();
   }
 
-  openEditModal(product: Product) {
-    this.selectedProduct = { ...product }; // Copy the selected product to avoid direct mutation
+
+  initializeForm(): void {
+    this.productForm = new FormGroup({
+      title: new FormControl('Default Title'),
+      description: new FormControl('Default Description'),
+      price: new FormControl(10),
+      discountPercentage: new FormControl(0),
+      categoryName: new FormControl('asd'),
+      stock: new FormControl(0),
+  
+      // meta as a FormGroup containing barcode
+      meta: new FormGroup({
+        barcode: new FormControl('123eqw')
+      }),
+  
+      brand: new FormControl('Default Brand'),
+      dimensions: new FormControl('Default Dimensions'),
+      warrantyInformation: new FormControl('Default Warranty Information'),
+  
+      // images as an array of file objects
+      images: new FormControl([]),
+  
+      // image as a file object
+      image: new FormControl(null),
+    });
+  }
+  
+  onFilesChange(event: Event, controlName: string): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const files = Array.from(input.files);
+      const fileArray = files.map(file => ({
+        fileData: file,
+        type: file.type
+      }));
+      this.productForm.get(controlName)?.setValue(fileArray);
+    }
+  }
+  
+  onFileChange(event: Event, controlName: string): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.productForm.get(controlName)?.setValue({
+        fileData: file,
+        type: file.type
+      });
+    }
+  }
+
+  
+
+
+Add(): void {
+  if (this.productForm.valid) {
+    this.productService.createProduct(this.productForm.value).subscribe({
+      next: () => {
+        console.log("Product created successfully");
+      },
+      error: (err) => {
+        console.error("Error creating product:", err);
+        console.error("MMMM",err.error.message);
+        
+      }
+    });
+  } else {
+    console.error("Form is invalid");
+  }
+}
+
+
+
+
+  openEditModal(product: any) {
+    this.selectedProduct = { ...product };
+    this.productForm.patchValue(this.selectedProduct);
     const modalElement = document.getElementById('editProductModal');
     if (modalElement) {
       const modal = new Modal(modalElement);
       modal.show();
     }
   }
+
+  updateProduct(): void {
+    if (!this.selectedProduct._id) {
+      this.errorMessage = 'Product ID is missing. Please select a valid product.';
+      return;
+    }
+
+    const formData = new FormData();
+    Object.keys(this.productForm.value).forEach(key => {
+      formData.append(key, this.productForm.get(key)?.value);
+    });
+
+    this.productService.updateProductById(this.selectedProduct._id, formData).pipe(
+      tap(() => {
+        console.log('Product updated');
+        this.closeModal('editProductModal');
+        this.loadProducts();
+      }),
+      catchError((error) => {
+        console.error('Error updating product:', error);
+        this.errorMessage = 'Failed to update product. Please try again later.';
+        return of(null);
+      })
+    ).subscribe();
+  }
+
 
   openCreateModal() {
     const modalElement = document.getElementById('createProductModal');
@@ -101,81 +173,31 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  createProduct(): void {
-    this.productService
-      .createProduct(this.newProduct)
-      .pipe(
-        tap((product) => {
-          console.log('Product created:', product);
-          this.products.push(product); // Add the newly created product to the list
-          this.newProduct = this.defaultProduct; // Reset the new product object
-          this.loadProducts();
-        }),
-        catchError((error) => {
-          console.log(this.newProduct);
-          console.error('Error creating product:', error);
-          // Handle error accordingly
-          return []; // Return an empty array or appropriate value to complete the observable
-        })
-      )
-      .subscribe();
 
-    // Close the modal (if using Bootstrap)
-    const modalElement = document.getElementById('createProductModal') as any;
-    if (modalElement) {
-      const modal = Modal.getInstance(modalElement);
-      if (modal) {
-        modal.hide();
-      }
+ 
+
+  deleteProduct(id: string | undefined): void {
+    if (!id) {
+      console.error('Product ID is not defined');
+      return;
     }
-  }
 
-  deleteProduct(id: string): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.productService.deleteProductById(id).subscribe({
         next: () => {
-          // Remove the deleted product from the local list
-          this.products = this.products.filter((product) => product._id !== id);
+          this.products = this.products.filter(product => product._id !== id);
         },
-        error: (err) => (this.errorMessage = err),
+        error: (err) => {
+          console.error('Error deleting product:', err);
+          this.errorMessage = 'Failed to delete product. Please try again later.';
+        }
       });
     }
   }
+  
 
-  onEditSubmit(): void {
-    if (!this.selectedProduct._id) {
-      this.errorMessage =
-        'Product ID is missing. Please select a valid product.';
-      return;
-    }
-    // Create a new product object excluding _id and __v
-    const { _id, __v, ...productData } = this.selectedProduct;
-    // console.log('Submitting product:', JSON.stringify(productData, null, 2));
-    this.productService
-      .updateProductById(this.selectedProduct._id, productData)
-      .pipe(
-        tap(() => {
-          this.closeModal();
-          this.loadProducts();
-        }),
-        catchError((error) => {
-          this.handleError(error);
-          return of(null);
-        })
-      )
-      .subscribe();
-  }
-
-  onCreateSubmit() {
-    this.createProduct();
-  }
-
-  handleError(error: any) {
-    throw new Error('Method not implemented.');
-  }
-
-  private closeModal(): void {
-    const modalElement = document.getElementById('editProductModal');
+  private closeModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
     if (modalElement) {
       const modal = Modal.getInstance(modalElement);
       if (modal) {
@@ -184,27 +206,20 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  // Load products (can be done in ngOnInit or other lifecycle hooks)
   loadProducts(): void {
     this.productService.getProducts().subscribe({
-      next: (products) => {
-        // Check if the products are fetched correctly
-        console.log('Fetched products: ', products);
-
-        // Assign products to the local variable
-        this.products = products;
-
-        // Log the first product after assignment
+      next: (response) => {
+        this.products = response.products;
+        console.log('Fetched products:', response.products); // أضف هذا السطر
+        this.products = response.products;
         if (this.products.length > 0) {
-          console.log('First product: ', this.products[0]);
           this.selectedProduct = this.products[0];
-        } else {
-          console.log('No products available.');
         }
       },
       error: (error) => {
-        console.error('Error fetching products: ', error);
-      },
+        console.error('Error fetching products:', error);
+        this.errorMessage = 'Failed to load products. Please try again later.';
+      }
     });
   }
 }

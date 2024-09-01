@@ -1,59 +1,38 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { User } from '../../model/User';
-
+import { User } from '../../../model/User';
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private usersUrl = 'http://localhost:3000/users'; // API endpoint
+  private adminUrl = 'https://e-commerce-api-fawn.vercel.app/admin'; // API endpoint
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all users
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl).pipe(
-      tap((data) => console.log('Users fetched:', data)),
-      catchError(this.handleError)
-    );
-  }
-
-  // Fetch a user by ID
-  getUserById(id: string): Observable<User> {
-    const url = `${this.usersUrl}/${id}`;
-    return this.http.get<User>(url).pipe(
-      tap((data) => console.log('User fetched:', data)),
-      catchError(this.handleError)
-    );
-  }
-
   // Create a new user
-  createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.usersUrl, user).pipe(
+  createUser(admin: User): Observable<User> {
+    let authToken = localStorage.getItem('token'); // Retrieve the token from local storage
+  console.log("Auth Token = " + authToken);
+
+  if (authToken) {
+    authToken = authToken.split(' ')[1]; // Split by space and get the token part
+  }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`, // Add the token to the Authorization header
+      'Content-Type': 'application/json' // Optionally, specify the content type
+    });
+  
+    console.log("Admin Object = " + JSON.stringify(admin, null, 2));
+  
+    return this.http.post<User>(this.adminUrl, admin, { headers }).pipe(
       tap((data) => console.log('User created:', data)),
       catchError(this.handleError)
     );
   }
-
-  // Update a user by ID
-  updateUserById(id: string, user: Partial<User>): Observable<User> {
-    const url = `${this.usersUrl}/${id}`;
-    return this.http.put<User>(url, user).pipe(
-      tap((data) => console.log('User updated:', data)),
-      catchError(this.handleError)
-    );
-  }
-
-  // Delete a user by ID
-  deleteUserById(id: string): Observable<{}> {
-    const url = `${this.usersUrl}/${id}`;
-    return this.http.delete(url).pipe(
-      tap((data) => console.log('User deleted:', data)),
-      catchError(this.handleError)
-    );
-  }
+  
 
   // Error handling
   private handleError(error: HttpErrorResponse): Observable<never> {
@@ -69,3 +48,12 @@ export class UserService {
     return throwError(() => new Error(errorMessage));
   }
 }
+
+
+
+// Admin Object = {
+//   "name": "Test Fatma",
+//   "email": "testfatma@admin.com",
+//   "password": "testFatma!123123",
+//   "confirmPassword": "testFatma!123123"
+// }

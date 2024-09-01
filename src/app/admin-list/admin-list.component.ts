@@ -37,8 +37,19 @@ export class AdminListComponent implements OnInit {
   errorMessage: string | undefined;
 
   constructor(private userService: UserService) {}
-
-  ngOnInit(): void {}
+  deleteUser(user: any) {}
+  openEditModal(user: any) {}
+  ngOnInit(): void {
+    this.userService.gitAdmin().subscribe({
+      next: (response) => {
+        this.users = response.admins;
+        console.log(response);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 
   openCreateModal() {
     const modalElement = document.getElementById('createUserModal');
@@ -56,7 +67,7 @@ export class AdminListComponent implements OnInit {
         tap((user: any) => {
           console.log('User created:', user);
           this.users.push(user);
-          this.newUser = {...this.defaultUser};
+          this.newUser = { ...this.defaultUser };
         }),
         catchError((error) => {
           console.error('Error creating user:', error);
@@ -73,7 +84,6 @@ export class AdminListComponent implements OnInit {
       }
     }
   }
-
 
   onCreateSubmit() {
     this.createAdmin();

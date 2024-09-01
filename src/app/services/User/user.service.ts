@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from '../../../model/User';
@@ -12,27 +16,33 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   // Create a new user
+  gitAdmin(): Observable<any> {
+    let authToken = localStorage.getItem('token'); 
+    return this.http.get<any>(this.adminUrl,{headers:new HttpHeaders({
+      Authorization: `${authToken}`,
+      'Content-Type': 'application/json',
+    })});
+  }
   createUser(admin: User): Observable<User> {
     let authToken = localStorage.getItem('token'); // Retrieve the token from local storage
-  console.log("Auth Token = " + authToken);
+    console.log('Auth Token = ' + authToken);
 
-  if (authToken) {
-    authToken = authToken.split(' ')[1]; // Split by space and get the token part
-  }
+    if (authToken) {
+      authToken = authToken.split(' ')[1]; // Split by space and get the token part
+    }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${authToken}`, // Add the token to the Authorization header
-      'Content-Type': 'application/json' // Optionally, specify the content type
+      Authorization: `Bearer ${authToken}`, // Add the token to the Authorization header
+      'Content-Type': 'application/json', // Optionally, specify the content type
     });
-  
-    console.log("Admin Object = " + JSON.stringify(admin, null, 2));
-  
+
+    console.log('Admin Object = ' + JSON.stringify(admin, null, 2));
+
     return this.http.post<User>(this.adminUrl, admin, { headers }).pipe(
       tap((data) => console.log('User created:', data)),
       catchError(this.handleError)
     );
   }
-  
 
   // Error handling
   private handleError(error: HttpErrorResponse): Observable<never> {
@@ -48,8 +58,6 @@ export class UserService {
     return throwError(() => new Error(errorMessage));
   }
 }
-
-
 
 // Admin Object = {
 //   "name": "Test Fatma",

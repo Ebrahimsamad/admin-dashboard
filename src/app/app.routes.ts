@@ -8,7 +8,7 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 
 // prettier-ignore
 const routes: Routes = [
-  { path: '', component: AdminPageComponent, canActivate: [AuthGuard] },
+  { path: '', component: ProductListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminListComponent, canActivate: [AuthGuard] },
   { path: 'product',component: ProductListComponent,canActivate: [AuthGuard],},

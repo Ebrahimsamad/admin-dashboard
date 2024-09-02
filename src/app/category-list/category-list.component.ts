@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Modal } from 'bootstrap';
+import { Modal, Toast } from 'bootstrap';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { CommonModule } from '@angular/common';
 import { catchError, of, tap } from 'rxjs';
@@ -43,6 +43,34 @@ export class CategoryListComponent implements OnInit {
     this.showModal('createCategoryModal');
   }
 
+  showToast(message: string, isSuccess: boolean = true): void {
+    const toastElement = document.getElementById('dynamicToast');
+    const messageElement = document.getElementById('toastMessage');
+
+    if (toastElement && messageElement) {
+      // Set the dynamic message
+      messageElement.textContent = message;
+
+      // Set the toast background color based on success or error
+      if (isSuccess) {
+        toastElement.classList.remove('bg-danger');
+        toastElement.classList.add('bg-success');
+      } else {
+        toastElement.classList.remove('bg-success');
+        toastElement.classList.add('bg-danger');
+      }
+
+      // Show the toast with animation
+      const toast = new Toast(toastElement);
+      toast.show();
+
+      // Optionally hide after a few seconds
+      setTimeout(() => {
+        toast.hide();
+      }, 3000);
+    }
+  }
+
   createCategory(): void {
     // Prepare the category data without _id and __v
     const { _id, __v, ...categoryToCreate } = this.newCategory;
@@ -59,9 +87,14 @@ export class CategoryListComponent implements OnInit {
           this.categories.push(category); // Add the newly created category to the list
           this.newCategory = { ...this.defaultCategory }; // Reset the new category object
           this.loadCategories();
+          this.showToast('Category created successfully!', true);
         }),
         catchError((error) => {
           console.error('Error creating category:', error);
+          this.showToast(
+            'Failed to create category. Please try again later.',
+            false
+          );
           this.errorMessage =
             'Failed to create category. Please try again later.';
           return of(null); // Return a null value to complete the observable
@@ -82,8 +115,14 @@ export class CategoryListComponent implements OnInit {
             this.categories = this.categories.filter(
               (category) => category._id !== id
             );
+
+            this.showToast('Category deleted successfully!', true);
           }),
           catchError((error) => {
+            this.showToast(
+              'Failed to delete category. Please try again later.',
+              false
+            );
             console.error('Error deleting category:', error);
             this.errorMessage =
               'Failed to delete category. Please try again later.';
@@ -118,8 +157,13 @@ export class CategoryListComponent implements OnInit {
         tap(() => {
           this.closeModal('editCategoryModal');
           this.loadCategories();
+          this.showToast('Category Edited successfully!', true);
         }),
         catchError((error) => {
+          this.showToast(
+            'CFailed to update category. Please try again later.',
+            false
+          );
           console.error('Error updating category:', error);
           this.errorMessage =
             'Failed to update category. Please try again later.';

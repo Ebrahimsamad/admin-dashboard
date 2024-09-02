@@ -1,6 +1,3 @@
-/* category-list.component.css */
-
-/* Button Styles */
 .create-btn {
   background-color: #e6a23c;
   color: #fff;
@@ -122,4 +119,32 @@ thead {
   );
   background-size: 200px 100%;
   animation: shimmer 1.5s infinite linear;
+}
+
+#dynamicToast {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1055; /* Ensure it’s above other content */
+}
+
+#dynamicToast.show {
+  opacity: 1;
+}
+
+.toast.fade {
+  opacity: 0;
+}
+
+.toast.fade.show {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.toast-header {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.toast-body {
+  font-size: 0.9rem;
 }

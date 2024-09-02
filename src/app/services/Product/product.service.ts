@@ -24,7 +24,6 @@ export class ProductService {
     });
   }
 
-  // Fetch all products
   getProducts(): Observable<{ message: string; products: any[] }> {
     const getAllProductsURL = `https://e-commerce-api-fawn.vercel.app/search?product`;
     return this.http
@@ -42,7 +41,6 @@ export class ProductService {
       );
   }
 
-  // Fetch a single product by ID
   getProductById(id: string): Observable<Product> {
     const url = `${this.productsUrl}/${id}`;
     return this.http.get<Product>(url, { headers: this.getAuthHeaders() }).pipe(
@@ -51,26 +49,23 @@ export class ProductService {
     );
   }
 
-  // Create a new product
   createProduct(data: FormData): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      Authorization: token || '', // Use the token directly from localStorage
+      Authorization: token || '',
     });
     return this.http.post(this.productsUrl, data, { headers });
   }
 
-  // Update a product by ID
   updateProductById(id: string, formData: FormData): Observable<Product> {
     const url = `${this.productsUrl}/${id}`;
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      Authorization: token || '', // Use the token directly from localStorage
+      Authorization: token || '',
     });
     return this.http.patch<Product>(url, formData, { headers });
   }
 
-  // Delete a product by ID
   deleteProductById(id: string): Observable<{}> {
     const url = `${this.productsUrl}/${id}`;
     return this.http.delete(url, { headers: this.getAuthHeaders() }).pipe(
@@ -79,21 +74,18 @@ export class ProductService {
     );
   }
 
-  // Error handling method
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage: string;
     if (error.error instanceof ErrorEvent) {
-      // Client-side or network error
       errorMessage = `An error occurred: ${error.error.message}`;
     } else {
-      // Backend error
       errorMessage = `Server returned code: ${
         error.status
       }, error message is: ${error.message}, response body: ${JSON.stringify(
         error.error
       )}`;
     }
-    console.error(errorMessage); // Log the error message
+    console.error(errorMessage);
     return throwError(
       () => new Error('Something went wrong; please try again later.')
     );

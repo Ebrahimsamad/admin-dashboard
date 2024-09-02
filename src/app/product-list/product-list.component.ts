@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Product } from '../../model/Product';
 import { ProductService } from '../services/Product/product.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Toast } from 'bootstrap';
 
 @Component({
   selector: 'app-product-list',
@@ -49,7 +50,7 @@ export class ProductListComponent implements OnInit {
   thumbnail: File | null = null;
 
   isLoading = true;
-  skeletonItems = Array(6).fill(null); // 6 skeleton items
+  skeletonItems = Array(6).fill(null);
 
   constructor(private productService: ProductService) {}
 
@@ -129,7 +130,6 @@ export class ProductListComponent implements OnInit {
         this.productForm.get('warrantyInformation')?.value
       );
 
-      // Handle the "images" field
       if (this.files.length > 0) {
         this.files.forEach((image) => {
           formData.append('images', image);
@@ -149,13 +149,13 @@ export class ProductListComponent implements OnInit {
       this.productService.createProduct(formData).subscribe({
         next: () => {
           console.log('Product created successfully');
-          this.loadProducts(); // Refresh the product list
+          this.closeModal('createProductModal');
+          this.loadProducts();
+          this.showToast('Product created successfully!', true);
         },
         error: (err) => {
           console.error('Error creating product:', err);
-          if (err.error) {
-            console.error('Error response:', err.error);
-          }
+          this.showToast('Error creating product!', false);
         },
       });
     } else {
@@ -163,9 +163,45 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  showToast(message: string, isSuccess: boolean = true): void {
+    const toastElement = document.getElementById('dynamicToast');
+    const messageElement = document.getElementById('toastMessage');
+
+    if (toastElement && messageElement) {
+      messageElement.textContent = message;
+
+      if (isSuccess) {
+        toastElement.classList.remove('bg-danger');
+        toastElement.classList.add('bg-success');
+      } else {
+        toastElement.classList.remove('bg-success');
+        toastElement.classList.add('bg-danger');
+      }
+
+      const toast = new Toast(toastElement);
+      toast.show();
+
+      setTimeout(() => {
+        toast.hide();
+      }, 3000);
+    }
+  }
+
   openEditModal(product: Product) {
     this.selectedProduct = { ...product };
-    this.productForm.patchValue(this.selectedProduct);
+
+    this.productForm.patchValue({
+      title: this.selectedProduct.title,
+      description: this.selectedProduct.description,
+      price: this.selectedProduct.price,
+      discountPercentage: this.selectedProduct.discountPercentage,
+      categoryName: this.selectedProduct.categoryID.name,
+      stock: this.selectedProduct.stock,
+      brand: this.selectedProduct.brand,
+      dimensions: this.selectedProduct.dimensions,
+      warrantyInformation: this.selectedProduct.warrantyInformation,
+    });
+
     const modalElement = document.getElementById('editProductModal');
     if (modalElement) {
       const modal = new Modal(modalElement);
@@ -181,39 +217,46 @@ export class ProductListComponent implements OnInit {
     }
 
     const formData = new FormData();
+
     Object.keys(this.productForm.controls).forEach((key) => {
       const control = this.productForm.get(key);
 
-      if (control?.value !== null && control?.value !== undefined) {
-        if (key === 'images') {
-          const files: File[] = control.value;
-          if (files && files.length) {
-            // Use `append` to handle multiple files, not `set`
-            files.forEach((file: File) => {
-              formData.append('images', file);
-            });
-          }
-        } else if (key === 'image') {
-          // If you have a single image upload field, handle it separately
-          const file: File = control.value;
-          if (file) {
-            formData.append('image', file);
-          }
-        } else {
-          formData.append(key, control.value);
-        }
+      if (
+        key !== 'image' &&
+        key !== 'images' &&
+        control?.value !== null &&
+        control?.value !== undefined
+      ) {
+        formData.append(key, control.value);
       }
     });
+
+    if (this.files.length > 0) {
+      this.files.forEach((image) => {
+        formData.append('images', image);
+      });
+    }
+
+    if (this.thumbnail) {
+      formData.append('image', this.thumbnail);
+    } else {
+      console.warn('No new primary image selected, using existing one.');
+    }
 
     this.productService
       .updateProductById(this.selectedProduct._id, formData)
       .subscribe({
         next: () => {
           console.log('Product updated successfully');
+          this.showToast('Product updated successfully!', true);
           this.closeModal('editProductModal');
-          this.loadProducts(); // Refresh the product list
+          this.loadProducts();
         },
         error: (error) => {
+          this.showToast(
+            'Failed to update product. Please try again later.',
+            false
+          );
           console.error('Error updating product:', error);
           this.errorMessage =
             'Failed to update product. Please try again later.';
@@ -222,6 +265,22 @@ export class ProductListComponent implements OnInit {
   }
 
   openCreateModal() {
+    this.newProduct = { ...this.defaultProduct };
+    this.productForm.reset({
+      title: '',
+      description: '',
+      price: 0,
+      discountPercentage: 0,
+      categoryName: '',
+      stock: 0,
+      brand: '',
+      dimensions: '',
+      warrantyInformation: '',
+    });
+
+    this.files = [];
+    this.thumbnail = null;
+
     const modalElement = document.getElementById('createProductModal');
     if (modalElement) {
       const modal = new Modal(modalElement);
@@ -239,9 +298,14 @@ export class ProductListComponent implements OnInit {
       this.productService.deleteProductById(id).subscribe({
         next: () => {
           this.products = this.products.filter((product) => product._id !== id);
+          this.showToast('Product deleted successfully!', true);
         },
         error: (err) => {
           console.error('Error deleting product:', err);
+          this.showToast(
+            'Failed to delete product. Please try again later.',
+            false
+          );
           this.errorMessage =
             'Failed to delete product. Please try again later.';
         },
@@ -260,19 +324,16 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.isLoading = true; // Set loading to true before fetching data
     this.productService.getProducts().subscribe({
       next: (response) => {
         this.products = response.products;
         console.log('Fetched products:', response.products);
-        this.isLoading = false; // Set loading to false once data is fetched
         if (this.products.length > 0) {
           this.selectedProduct = this.products[0];
         }
       },
       error: (error) => {
         console.error('Error fetching products:', error);
-        this.isLoading = false; // Set loading to false in case of error
         this.errorMessage = 'Failed to load products. Please try again later.';
       },
     });

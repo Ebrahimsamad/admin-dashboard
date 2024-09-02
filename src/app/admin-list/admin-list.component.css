@@ -81,3 +81,31 @@
 .table-responsive {
   overflow-x: auto;
 }
+
+#dynamicToast {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1055; /* Ensure it’s above other content */
+}
+
+#dynamicToast.show {
+  opacity: 1;
+}
+
+.toast.fade {
+  opacity: 0;
+}
+
+.toast.fade.show {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.toast-header {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.toast-body {
+  font-size: 0.9rem;
+}

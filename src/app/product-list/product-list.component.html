@@ -1,368 +1,3 @@
-<!-- product-list.component.html -->
-<!-- <div class="container">
-   Create New Product Button -->
-<!-- <button class="btn btn-primary mb-4" (click)="openCreateModal()">
-    Create New Product
-  </button> -->
-
-<!-- Product Table -->
-<!-- <table class="table table-striped text-center">
-    <thead>
-        <th class="col-1">Title</th>
-        <th class="col-1">Image</th>
-        <th class="col-5">Description</th>
-        <th class="col-1">Price</th>
-        <th class="col-1">Stock</th>
-        <th class="col-1">Brand</th>
-        <th class="col-1">Actions</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products">
-        <td>{{ product.title }}</td>
-        <td>
-          <img
-            [src]="product.images[0]"
-            alt="Product Image"
-            class="img-thumbnail"
-            style="max-width: 80px; max-height: 80px"
-          />
-        </td>
-        <td>{{ product.description }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.stock }}</td>
-        <td>{{ product.brand }}</td>
-        <td>
-          <button
-            class="btn btn-warning btn-sm"
-            (click)="openEditModal(product)"
-          >
-            <i class="fas fa-edit"></i>
-          </button>
-          <button
-            class="btn btn-danger btn-sm ms-2"
-            (click)="deleteProduct(product._id)"
-          >
-            <i class="fas fa-trash"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
-
-<!-- Edit Product Modal -->
-<!-- <div
-  class="modal fade"
-  id="editProductModal"
-  tabindex="-1"
-  aria-labelledby="editProductModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="productForm" (ngSubmit)="updateProduct()"> -->
-<!-- Title -->
-<!-- <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input
-              type="text"
-              id="title"
-              formControlName="title"
-              class="form-control"
-            />
-          </div> -->
-
-<!-- Description -->
-<!-- <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea
-              id="description"
-              formControlName="description"
-              name="description"
-              class="form-control"
-            ></textarea>
-          </div> -->
-
-<!-- Price -->
-<!-- <div class="mb-3">
-            <label for="price" class="form-label">Price</label>
-            <input
-              type="number"
-              id="price"
-              formControlName="price"
-              name="price"
-              class="form-control"
-            />
-          </div> -->
-
-<!-- Stock -->
-<!-- <div class="mb-3">
-            <label for="stock" class="form-label">Stock</label>
-            <input
-              type="number"
-              id="stock"
-              formControlName="stock"
-              name="stock"
-              class="form-control"
-            />
-          </div> -->
-
-<!-- Brand -->
-<!-- <div class="mb-3">
-            <label for="brand" class="form-label">Brand</label>
-            <input
-              type="text"
-              id="brand"
-              formControlName="brand"
-              name="brand"
-              class="form-control"
-            />
-          </div> -->
-
-<!-- Dimensions -->
-<!-- <div class="mb-3">
-            <label for="dimensions" class="form-label">Dimensions</label>
-            <input
-              type="text"
-              id="dimensions"
-              formControlName="dimensions"
-              name="dimensions"
-              class="form-control"
-              placeholder="Width x Height x Depth"
-            />
-          </div> -->
-
-<!-- Warranty Information -->
-<!-- <div class="mb-3">
-            <label for="warrantyInformation" class="form-label"
-              >Warranty Information</label
-            >
-            <textarea
-              id="warrantyInformation"
-              formControlName="warrantyInformation"
-              name="warrantyInformation"
-              class="form-control"
-            ></textarea>
-          </div> -->
-
-<!-- Images -->
-<!-- <div class="mb-3">
-            <label for="images" class="form-label">Images</label>
-            <input
-              type="text"
-              id="images"
-              formControlName="images"
-              name="images"
-              class="form-control"
-              placeholder="Comma-separated URLs"
-            />
-          </div> -->
-
-<!-- <div class="mb-3">
-            <label for="images" class="form-label">Images</label>
-            <input type="file" (change)="onFilesChange($event)" multiple />
-          </div> -->
-
-<!-- Thumbnail -->
-<!-- <div class="mb-3">
-            <label for="thumbnail" class="form-label">Thumbnail</label>
-            <input
-              type="text"
-              id="thumbnail"
-              formControlName="image"
-              name="thumbnail"
-              class="form-control"
-            />
-          </div> -->
-<!-- 
-          <div class="mb-3">
-            <label for="thumbnail" class="form-label">Thumbnail</label>
-            <input type="file" (change)="onFileChange($event)" />
-          </div> -->
-
-<!-- Save Button -->
-<!-- <button type="submit" class="btn btn-primary">Save</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- Create Product Modal -->
-<!-- <div
-  class="modal fade"
-  id="createProductModal"
-  tabindex="-1"
-  aria-labelledby="createProductModalLabel"
-  aria-hidden="true"
-> -->
-<!-- Modal Content -->
-<!-- <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createProductModalLabel">Create Product</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="productForm" (ngSubmit)="Add()">
-          <! Title -->
-<!-- <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input
-              type="text"
-              id="title"
-              formControlName="title"
-              class="form-control"
-            />
-          </div> -->
-
-<!-- Description -->
-<!-- <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea
-              id="description"
-              formControlName="description"
-              class="form-control"
-            ></textarea>
-          </div> -->
-
-<!-- Category Name -->
-<!-- <div class="mb-3">
-            <label for="categoryID" class="form-label">Category Name</label>
-            <input
-              type="text"
-              id="categoryID"
-              formControlName="categoryName"
-              class="form-control"
-            />
-          </div> -->
-
-<!-- Price -->
-<!-- <div class="mb-3">
-            <label for="price" class="form-label">Price</label>
-            <input
-              type="text"
-              id="price"
-              formControlName="price"
-              class="form-control"
-              pattern="^\d+(\.\d{1,2})?$"
-              title="Please enter a valid number with up to two decimal places."
-            />
-          </div> -->
-
-<!-- Discount Percentage -->
-<!-- <div class="mb-3">
-            <label for="discountPercentage" class="form-label"
-              >Discount Percentage</label
-            >
-            <input
-              type="text"
-              id="discountPercentage"
-              formControlName="discountPercentage"
-              class="form-control"
-              pattern="^\d+(\.\d{1,2})?$"
-              title="Please enter a valid number with up to two decimal places."
-            />
-          </div> -->
-
-<!-- Stock -->
-<!-- <div class="mb-3">
-            <label for="stock" class="form-label">Stock</label>
-            <input
-              type="text"
-              id="stock"
-              formControlName="stock"
-              class="form-control"
-              pattern="^\d+$"
-              title="Please enter a valid whole number."
-            />
-          </div> -->
-
-<!-- Brand -->
-<!-- <div class="mb-3">
-            <label for="brand" class="form-label">Brand</label>
-            <input
-              type="text"
-              id="brand"
-              formControlName="brand"
-              class="form-control"
-            />
-          </div> -->
-
-<!-- Dimensions -->
-<!-- <div class="mb-3">
-            <label for="dimensions" class="form-label">Dimensions</label>
-            <input
-              type="text"
-              id="dimensions"
-              formControlName="dimensions"
-              class="form-control"
-              placeholder="Width x Height x Depth"
-            />
-          </div> -->
-
-<!-- Warranty Information -->
-<!-- <div class="mb-3">
-            <label for="warrantyInformation" class="form-label"
-              >Warranty Information</label
-            >
-            <textarea
-              id="warrantyInformation"
-              formControlName="warrantyInformation"
-              class="form-control"
-            ></textarea>
-          </div> -->
-
-<!-- Images -->
-<!-- <div class="mb-3">
-            <label for="images" class="form-label">Images</label>
-            <input type="file" (change)="onFilesChange($event)" multiple />
-          </div> -->
-
-<!-- Thumbnail -->
-<!-- <div class="mb-3">
-            <label for="thumbnail" class="form-label">Thumbnail</label>
-            <input type="file" (change)="onFileChange($event)" />
-          </div> -->
-
-<!-- Save Button -->
-<!-- <button type="submit" class="btn btn-primary">Save</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- Skeleton Loader -->
-
-<ng-template #productList>
-  <div *ngFor="let product of products">
-    <!-- Your product card HTML here -->
-    <div class="product-card">
-      <img [src]="product.image" alt="Product Image" />
-      <h3>{{ product.title }}</h3>
-      <p>{{ product.description }}</p>
-      <p>{{ product.price | currency }}</p>
-      <!-- Add more product details here -->
-    </div>
-  </div>
-</ng-template>
-
 <div class="container">
   <!-- Create New Product Button -->
   <button class="btn btn-primary mb-4" (click)="openCreateModal()">
@@ -377,6 +12,7 @@
         <th>Image</th>
         <th>Description</th>
         <th>Price</th>
+        <th>Category</th>
         <th>Stock</th>
         <th>Brand</th>
         <th>Actions</th>
@@ -387,29 +23,38 @@
         <td>{{ product.title }}</td>
         <td>
           <img
-            [src]="product.images[0]"
+            [src]="product.image"
             alt="Product Image"
             class="img-thumbnail"
-            [src]="product.images[0]"
+            [src]="product.image"
             alt="Product Image"
             class="img-thumbnail"
             style="width: 100px; height: auto"
           />
         </td>
+
+        <!-- <td>{{ product[i] }}</td> -->
         <td>{{ product.description }}</td>
         <td>{{ product.price | currency }}</td>
+        <td>{{ product.categoryID.name }}</td>
         <td>{{ product.stock }}</td>
         <td>{{ product.brand }}</td>
         <td>
-          <button class="btn btn-sm btn-info" (click)="openEditModal(product)">
-            Edit
-          </button>
-          <button
-            class="btn btn-sm btn-danger"
-            (click)="deleteProduct(product._id)"
-          >
-            Delete
-          </button>
+          <div class="d-flex">
+            <button
+              class="btn btn-secondary btn-sm action-btn"
+              (click)="openEditModal(product)"
+            >
+              <i class="fas fa-edit"></i>
+            </button>
+
+            <button
+              class="btn btn-danger btn-sm action-btn ms-2"
+              (click)="deleteProduct(product._id)"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -518,15 +163,7 @@
                 formControlName="warrantyInformation"
               ></textarea>
             </div>
-            <!-- <div class="mb-3">
-              <label for="meta-barcode" class="form-label">Barcode</label>
-              <input
-                type="text"
-                class="form-control"
-                id="meta-barcode"
-                formControlName="meta.barcode"
-              />
-            </div> -->
+
             <div class="mb-3">
               <label for="images" class="form-label">Product Images</label>
               <input
@@ -656,15 +293,7 @@
                 formControlName="warrantyInformation"
               ></textarea>
             </div>
-            <!-- <div class="mb-3">
-              <label for="meta-barcode" class="form-label">Barcode</label>
-              <input
-                type="text"
-                class="form-control"
-                id="meta-barcode"
-                formControlName="meta.barcode"
-              />
-            </div> -->
+
             <div class="mb-3">
               <label for="images" class="form-label">Product Images</label>
               <input
@@ -703,5 +332,27 @@
     <div class="skeleton-cell"></div>
     <div class="skeleton-cell"></div>
     <div class="skeleton-cell"></div>
+  </div>
+</div>
+
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div class="toast-container toast-cont position-fixed top-0 end-0 p-3">
+    <div
+      id="successToast"
+      class="toast align-items-center text-bg-success border-0"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="d-flex">
+        <div class="toast-body">Product created successfully!</div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
   </div>
 </div>

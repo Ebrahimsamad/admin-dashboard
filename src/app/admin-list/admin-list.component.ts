@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Modal } from 'bootstrap';
+import { Modal, Toast } from 'bootstrap';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, of, tap } from 'rxjs';
@@ -18,7 +18,7 @@ export class AdminListComponent implements OnInit {
   errorMessage: string | undefined;
 
   defaultUser: User = {
-    _id:"",
+    _id: '',
     name: 'new',
     email: 'new@example.com',
     password: 'SecurePassword123!',
@@ -26,7 +26,7 @@ export class AdminListComponent implements OnInit {
   };
 
   newUser: User = {
-    _id:"",
+    _id: '',
     name: '',
     email: '',
     password: '',
@@ -37,8 +37,8 @@ export class AdminListComponent implements OnInit {
     name: '',
     email: 'Fatma@example.com',
     password: '',
-    role:'',
-    _id: ""
+    role: '',
+    _id: '',
   };
 
   constructor(private userService: UserService) {}
@@ -71,19 +71,21 @@ export class AdminListComponent implements OnInit {
       email: user.email || '',
       role: user.role || '',
       password: user.password || '',
-      _id: user._id || ''
+      _id: user._id || '',
     };
-    console.log("this.selectedUser: ", JSON.stringify(this.selectedUser, null, 2));
-    console.log("sent User: ", JSON.stringify(user, null, 2));
+    console.log(
+      'this.selectedUser: ',
+      JSON.stringify(this.selectedUser, null, 2)
+    );
+    console.log('sent User: ', JSON.stringify(user, null, 2));
     this.showModal('editUserModal');
   }
-  
 
   createAdmin(): void {
     if (this.validateNewUser(this.newUser)) {
       // Exclude the _id field from the newUser object
       const { _id, ...createdAdmin } = this.newUser;
-  
+
       console.log('Creating user:', JSON.stringify(createdAdmin, null, 2));
       this.userService
         .createUser(createdAdmin)
@@ -93,33 +95,34 @@ export class AdminListComponent implements OnInit {
             this.users.push(user);
             this.loadAdmins();
             this.newUser = { ...this.defaultUser };
+            this.showToast('Admin Created successfully!', true);
           }),
           catchError((error) => {
+            this.showToast('Failed to create admin!', false);
             console.error('Error creating user:', error);
             this.errorMessage = 'Failed to create user';
             return of([]);
           })
         )
         .subscribe();
-  
+
       this.closeModal('createUserModal');
     } else {
       console.error('User validation failed');
     }
   }
 
-  
-  updateAdmin(): void {  
+  updateAdmin(): void {
     // Construct the userToUpdate object with specific properties
     const userToUpdate = {
       name: this.selectedUser.name,
       email: this.selectedUser.email,
       role: this.selectedUser.role,
-      password: this.selectedUser.password
+      password: this.selectedUser.password,
     };
-  
+
     console.log('Updating user:', JSON.stringify(userToUpdate, null, 2));
-  
+
     this.userService
       .updateUser(this.selectedUser._id, userToUpdate)
       .pipe(
@@ -129,21 +132,24 @@ export class AdminListComponent implements OnInit {
           this.users = this.users.map((user) =>
             user._id === updatedUser._id ? updatedUser : user
           );
+          this.showToast('User Updated successfully!', true);
+
           // Reload the admin users after the update
           this.loadAdmins();
         }),
         catchError((error) => {
+          this.showToast('Failed to update user!', false);
+
           console.log('Error updating user:', error);
           this.errorMessage = 'Failed to update user';
           return of([]);
         })
       )
       .subscribe();
-  
+
     this.closeModal('editUserModal');
   }
-  
-  
+
   deleteUser(userId: string): void {
     if (confirm('Are you sure you want to delete this user?')) {
       this.userService
@@ -152,9 +158,11 @@ export class AdminListComponent implements OnInit {
           tap(() => {
             this.users = this.users.filter((user) => user._id !== userId);
             console.log('User deleted:', userId);
+            this.showToast('Admin Deleted successfully!', true);
             this.loadAdmins();
           }),
           catchError((error) => {
+            this.showToast('Failed to delete admin!', false);
             console.error('Error deleting user:', error);
             this.errorMessage = 'Failed to delete user';
             return of([]);
@@ -169,8 +177,35 @@ export class AdminListComponent implements OnInit {
   }
 
   onEditSubmit(): void {
-
     this.updateAdmin();
+  }
+
+  showToast(message: string, isSuccess: boolean = true): void {
+    const toastElement = document.getElementById('dynamicToast');
+    const messageElement = document.getElementById('toastMessage');
+
+    if (toastElement && messageElement) {
+      // Set the dynamic message
+      messageElement.textContent = message;
+
+      // Set the toast background color based on success or error
+      if (isSuccess) {
+        toastElement.classList.remove('bg-danger');
+        toastElement.classList.add('bg-success');
+      } else {
+        toastElement.classList.remove('bg-success');
+        toastElement.classList.add('bg-danger');
+      }
+
+      // Show the toast with animation
+      const toast = new Toast(toastElement);
+      toast.show();
+
+      // Optionally hide after a few seconds
+      setTimeout(() => {
+        toast.hide();
+      }, 3000);
+    }
   }
 
   private validateNewUser(user: User): boolean {

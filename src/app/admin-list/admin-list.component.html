@@ -10,12 +10,11 @@
       <tr>
         <th class="col-12 col-md-3">Name</th>
         <th class="col-12 col-md-3">Email</th>
-        <th class="col-12 col-md-2">Password</th>
+        <!-- <th class="col-12 col-md-2">Role</th> -->
         <th class="col-12 col-md-2">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <!-- Skeleton Loader Rows -->
       <ng-container *ngIf="!users.length">
         <tr>
           <td><div class="skeleton-loader" style="width: 80%"></div></td>
@@ -58,7 +57,7 @@
         <tr *ngFor="let user of users">
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>*****************</td>
+          <!-- <td>ADMIN</td> -->
           <td>
             <button
               class="btn btn-secondary btn-sm action-btn"
@@ -174,6 +173,7 @@
             <input
               type="text"
               id="name"
+              required
               [(ngModel)]="newUser.name"
               name="name"
               class="form-control"
@@ -183,6 +183,7 @@
             <label for="email" class="form-label">Email</label>
             <input
               type="email"
+              required
               id="email"
               [(ngModel)]="newUser.email"
               name="email"
@@ -196,6 +197,7 @@
               id="password"
               [(ngModel)]="newUser.password"
               name="password"
+              required
               class="form-control"
             />
           </div>
@@ -208,6 +210,7 @@
               id="confirmPassword"
               [(ngModel)]="newUser.confirmPassword"
               name="confirmPassword"
+              required
               class="form-control"
             />
           </div>
@@ -215,5 +218,26 @@
         </form>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Toooooooast Notification don't delete pleeeeeeeeeease😡 -->
+<div
+  id="dynamicToast"
+  class="toast align-items-center text-white bg-success border-0 position-fixed top-0 end-0 m-3"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+>
+  <div class="d-flex">
+    <div class="toast-body" id="toastMessage">
+      <!-- Dynamic message will be inserted here -->
+    </div>
+    <button
+      type="button"
+      class="btn-close btn-close-white me-2 m-auto"
+      data-bs-dismiss="toast"
+      aria-label="Close"
+    ></button>
   </div>
 </div>
